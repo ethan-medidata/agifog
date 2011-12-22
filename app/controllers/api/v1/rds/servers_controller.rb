@@ -1,4 +1,6 @@
 class Api::V1::Rds::ServersController < Api::V1::Rds::BaseController
+  
+  #http://docs.amazonwebservices.com/AmazonRDS/latest/APIReference/index.html?API_CreateDBInstance.html
   def index
     begin
       if @servers = rds.servers
@@ -34,7 +36,7 @@ class Api::V1::Rds::ServersController < Api::V1::Rds::BaseController
         new_instance_db = JSON.parse(request.raw_post)
       rescue JSON::ParserError
         error =  { :errors => ["The request failed because its format is not valid; it could not be parsed"] }
-        respond_with(error, :status => 406) and return
+        respond_with(error, :status => 406, :location => nil) and return # 406 => :not_acceptable
       end
       
       instance_db = rds.servers.create(rds_default_server_params.merge(new_instance_db["server"]))
@@ -42,11 +44,11 @@ class Api::V1::Rds::ServersController < Api::V1::Rds::BaseController
         respond_with(instance_db, :location => api_v1_rds_server_path(instance_db))
       else
         error = { :errors => [instance_db.errros] }
-        respond_with(error, :status => 401)
+        respond_with(error, :status => 400, :location => nil)
       end
     rescue => e
       error =  { :errors => [e.message] }
-      respond_with(error, :status => 422)
+      respond_with(error, :status => 422, :location => nil) # 422 => :unprocessable_entity
     end
   end
   
@@ -81,7 +83,7 @@ class Api::V1::Rds::ServersController < Api::V1::Rds::BaseController
            respond_with("#{params[:name]} was updated successfully")
          else
            error = { :errors => ["#{params[:id]} wasn't updated"]}
-           respond_with(error, :status => 402)
+           respond_with(error, :status => 400)
          end
        else
          error = { :errors => ["#{params[:id]} rds server not found"] }

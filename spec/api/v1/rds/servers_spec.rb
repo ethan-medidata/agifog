@@ -84,7 +84,6 @@ describe "/api/v1/rds/servers", :type => :api do
       # Another option is to list all and if it still shows up, check that is in deleting state
       get "/api/v1/rds/servers/#{@instance_db.id}.json"
       last_response.status.should == 404
-
     end
   end
   
@@ -113,6 +112,24 @@ describe "/api/v1/rds/servers", :type => :api do
       attributes["db_security_groups"][0]["DBSecurityGroupName"].should == "default"
       attributes["multi_az"].should == false
       attributes["state"].should == "creating"
+    end
+    
+    it "Unvalid json format" do
+       post "/api/v1/rds/servers.json", '{
+           "server": {
+               "id": "test-spec-12347"
+               "flavor_id": "db.m1.small",
+               db_name: "testspec",
+               "allocated_storage": 5,
+               "engine": "mysql",
+               "engine_version": "5.1.57",
+               "master_username": "testspec",
+               "password": "testspec01"
+           }
+       }'
+       last_response.status == 406
+       errors = {"errors" => ["The request failed because its format is not valid; it could not be parsed"]}.to_json
+       last_response.body.should eql(errors)
     end
   end
   
