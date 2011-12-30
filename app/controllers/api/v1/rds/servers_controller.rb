@@ -4,14 +4,14 @@ class Api::V1::Rds::ServersController < Api::V1::Rds::BaseController
   def index
     begin
       if @servers = rds.servers
-        respond_with(@servers)
+        render(:json => @servers)
       else
         error = { :errors => ["There was a problem retrieving the rds servers"]}
-        respond_with(error, :status => 404)
+        render(:json => error, :status => 404)
       end
     rescue => e
       error =  { :errors => [e.message.to_json] }
-      respond_with(error, :status => 422)      
+      render(:json => error, :status => 422)      
     end
   end
   
@@ -19,14 +19,19 @@ class Api::V1::Rds::ServersController < Api::V1::Rds::BaseController
   def show
     begin
       if @server = rds.servers.get(params[:id])
-        respond_with(@server)
+        render(:json => @server)
       else
         error = { :errors => ["#{params[:id]} rds server not found"] }
-        respond_with(error, :status => 404)
+        
+#        This is wrong, as it expects { "errors": { "name": ["Name cannot be empty"] } }.
+#        There is also pull request for this to patch the tests, but documentation remains in old state.
+#        https://github.com/odorcicd/rails/commit/b09b2a8401c18d1efff21b3919ac280470a6eb8b
+#        error = { :errors => {:name => ["#{params[:id]} rds server not found"]} }
+        render(:json => error, :status => 404)
       end
     rescue => e
       error =  { :errors => [e.message.to_json] }
-      respond_with(error, :status => 422)
+      render(:json => error, :status => 422)
     end
   end
   
@@ -36,19 +41,24 @@ class Api::V1::Rds::ServersController < Api::V1::Rds::BaseController
         new_instance_db = JSON.parse(request.raw_post)
       rescue JSON::ParserError
         error =  { :errors => ["The request failed because its format is not valid; it could not be parsed"] }
-        respond_with(error, :status => 406, :location => nil) and return # 406 => :not_acceptable
+        render(:json => error, :status => 406) and return # 406 => :not_acceptable
       end
       
       instance_db = rds.servers.create(rds_default_server_params.merge(new_instance_db["server"]))
       if instance_db
-        respond_with(instance_db, :location => api_v1_rds_server_path(instance_db))
+        render(:json => instance_db, :location => api_v1_rds_server_path(instance_db))
       else
         error = { :errors => [instance_db.errros] }
-        respond_with(error, :status => 400, :location => nil)
+        render(:json => error, :status => 400)
       end
     rescue => e
-      error =  { :errors => [e.message] }
-      respond_with(error, :status => 422, :location => nil) # 422 => :unprocessable_entity
+      if match = e.message.match(/<Code>(.*)<\/Code>[\s\\\w]+<Message>(.*)<\/Message>/m)
+        puts "#{match[1].split('.').last} => #{match[2]}"
+        error =  { :errors => ["#{match[1].split('.').last} => #{match[2]}"] }
+      else
+        error =  { :errors => [e.message] }
+      end
+      render(:json => error, :status => 422)
     end
   end
   
@@ -57,14 +67,19 @@ class Api::V1::Rds::ServersController < Api::V1::Rds::BaseController
       @server = rds.servers.get(params[:id])
       raise "#{params[:id]} doesn't exist" unless @server
       if @server.destroy
-        respond_with("#{params[:id]} was deleted successfully")
+        render(:json => ["#{params[:id]} was deleted successfully"])
       else        
         error = { :errors => ["#{params[:id]} wasn't deleted"]}
-        respond_with(error, :status => 404)
+        render(:json => error, :status => 404)
       end
     rescue => e
-      error =  { :errors => [e.message] }
-      respond_with(error, :status => 422)
+      if match = e.message.match(/<Code>(.*)<\/Code>[\s\\\w]+<Message>(.*)<\/Message>/m)
+        puts "#{match[1].split('.').last} => #{match[2]}"
+        error =  { :errors => ["#{match[1].split('.').last} => #{match[2]}"] }
+      else
+        error =  { :errors => [e.message] }
+      end
+      render(:json => error, :status => 422)
     end
   end
   
@@ -74,25 +89,30 @@ class Api::V1::Rds::ServersController < Api::V1::Rds::BaseController
         modify_options = JSON.parse(request.raw_post)
       rescue JSON::ParserError
         error =  { :errors => ["The request failed because its format is not valid; it could not be parsed"] }
-        respond_with(error, :status => 406) and return
+        render(:json => error, :status => 406) and return
       end
       
        if @server = rds.servers.get(params[:id])
          modify_options = JSON.parse(request.body.read)
          if @server.modify(false, modify_options)
-           respond_with("#{params[:name]} was updated successfully")
+           render(:json => ["#{params[:id]} was updated successfully"])
          else
            error = { :errors => ["#{params[:id]} wasn't updated"]}
-           respond_with(error, :status => 400)
+           render(:json => error, :status => 400)
          end
        else
          error = { :errors => ["#{params[:id]} rds server not found"] }
-         respond_with(error, :status => 404)    
+         render(:json => error, :status => 404)    
        end
-    rescue => e
-     error =  { :errors => [e.message] }
-     respond_with(error, :status => 422)
-    end
+     rescue => e
+       if match = e.message.match(/<Code>(.*)<\/Code>[\s\\\w]+<Message>(.*)<\/Message>/m)
+         puts "#{match[1].split('.').last} => #{match[2]}"
+         error =  { :errors => ["#{match[1].split('.').last} => #{match[2]}"] }
+       else
+         error =  { :errors => [e.message] }
+       end
+       render(:json => error, :status => 422)
+     end
   end
   
 end
