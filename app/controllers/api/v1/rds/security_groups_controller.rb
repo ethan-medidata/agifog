@@ -159,6 +159,7 @@ class Api::V1::Rds::SecurityGroupsController < Api::V1::Rds::BaseController
         puts "#{match[1].split('.').last} => #{match[2]}"
         error =  { :errors => ["#{match[1].split('.').last} => #{match[2]}"] }
       else
+        puts e.message
         error =  { :errors => [e.message] }
       end
       render(:json => error, :status => 422)

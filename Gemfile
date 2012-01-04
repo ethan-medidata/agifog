@@ -35,7 +35,8 @@ gem 'haml-rails', :group => :development
 gem 'simple_form'		# Cleanest way to write a form view
 
 gem 'yajl-ruby'
-gem 'fog'
+#gem 'fog'
+gem 'fog', :git => 'git://github.com/fog/fog.git'
 
 group :test do
   gem 'database_cleaner'
