@@ -38,6 +38,9 @@ gem 'yajl-ruby'
 #gem 'fog'
 gem 'fog', :git => 'git://github.com/fog/fog.git'
 
+gem 'rack-mauth', :git => "git@github.com:mdsol/rack-mauth.git", :tag => "v0.1.2", :require => 'rack/mauth'
+gem 'mauth_signer', :git => 'git@github.com:mdsol/mauth_signer.git', :tag => 'v0.6.3'
+
 group :test do
   gem 'database_cleaner'
   gem 'rails3-generators' #mainly for factory_girl & simple_form at this point
