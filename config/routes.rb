@@ -10,9 +10,17 @@ Agifog::Application.routes.draw do
           end
         end
       end
+      
       namespace :compute do
-        resources :servers
+        resources :servers do
+          member do
+            put 'reboot'
+            put 'start'
+            put 'stop'
+          end
+        end
       end
+      
     end
   end
 end

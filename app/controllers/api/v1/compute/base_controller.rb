@@ -32,4 +32,13 @@ class Api::V1::Compute::BaseController < ActionController::Base
     render(:json => JSON.pretty_generate(JSON.parse(body.to_json)), :status => status)
   end
 
+  def rescued_pretty_json_render(rescued_message,status=422)
+    if match = rescued_message.message.match(/<Code>(.*)<\/Code>[\s\\\w]+<Message>(.*)<\/Message>/m)
+      puts "#{match[1].split('.').last} => #{match[2]}"
+      error =  { :errors => ["#{match[1].split('.').last} => #{match[2]}"] }
+    else
+      error =  { :errors => [rescued_message.message] }
+    end
+    pretty_json_render(error, status)
+  end
 end

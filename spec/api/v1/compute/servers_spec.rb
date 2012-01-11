@@ -60,6 +60,24 @@ describe "/api/v1/compute/servers", :type => :api do
       end
     end
     
+    describe "DELETE on /api/v1/compute/servers/:id" do
+
+      it "Delete a rds instance" do
+        delete "/api/v1/compute/servers/#{@ec2_instance.id}.json"
+        last_response.should be_ok
+        # verify that doesn't exist anymore
+        # This is not the best test because it may take sometime before it's deleted
+        # Another option is to list all and if it still shows up, check that is in deleting state
+        get "/api/v1/compute/servers/#{@ec2_instance.id}.json"
+        if last_response.should be_ok
+          attributes = JSON.parse(last_response.body)
+          attributes["state"].should == "shutting-down"
+        else
+          last_response.status.should == 404
+        end
+      end
+    end
+    
     describe "POST on /api/v1/compute/servers" do
       
       it "Create an ec2 instance" do
@@ -67,16 +85,19 @@ describe "/api/v1/compute/servers", :type => :api do
             :flavor_id => "m1.small",
             :groups => ["rspec-agi-sg", "rspec-agi-sg-second"],
             :key_name => 'rspec-agi-key',
+            :tags => {'key' => 'value'},
             :availability_zone => "us-east-1a" }
           }.to_json
         last_response.status == 201
         attributes = JSON.parse(last_response.body)
         attributes["flavor_id"].should == "m1.small"
         attributes["availability_zone"].should == "us-east-1a"
-        attributes["state"].should == "pending"
+        # Fog mocking bug workaround. When using a tag, the state gets to running instead of pending
+        %w{pending running}.should include(attributes["state"])
         attributes["groups"].should include("rspec-agi-sg")
         attributes["groups"].should include("rspec-agi-sg-second")
         attributes["key_name"].should == 'rspec-agi-key'
+        attributes["tags"].should == {'key' => 'value'}
       end
       
       it "Unvalid json format" do
@@ -93,6 +114,25 @@ describe "/api/v1/compute/servers", :type => :api do
       end
     end
   
+    describe "PUT /api/v1/compute/servers/:server_id/change_status" do
+      it "should reboot an ec2 instance" do
+        put "/api/v1/compute/servers/#{@last_instance.id}/reboot"
+        # i can't really test more than this becasue Fog mocking reboot doesn't work properly
+        last_response.should be_ok
+      end
+      
+      # Fog Contributions welcome!
+      #it "should stop an ec2 instance" do
+      #  put "/api/v1/compute/servers/#{@last_instance.id}/stop"
+      #  last_response.should be_ok
+      #end
+      #
+      #it "should start an ec2 instance" do
+      #  put "/api/v1/compute/servers/#{@last_instance.id}/start"
+      #  last_response.should be_ok
+      #end
+    end
+      
   end
   
 end

@@ -9,8 +9,7 @@ class Api::V1::Compute::ServersController < Api::V1::Compute::BaseController
         pretty_json_render(error, 404)
       end
     rescue => e
-      error =  { :errors => [e.message.to_json] }
-      pretty_json_render(error, 422)      
+      rescued_pretty_json_render(e,422)      
     end
   end
   
@@ -28,8 +27,49 @@ class Api::V1::Compute::ServersController < Api::V1::Compute::BaseController
         pretty_json_render(error, 404)
       end
     rescue => e
-      error =  { :errors => [e.message.to_json] }
-      pretty_json_render(error, 422)
+      rescued_pretty_json_render(e,422)
+    end
+  end
+  
+  def reboot
+    begin
+      if @server = compute.servers.get(params[:id])
+        @server.reboot
+        pretty_json_render(true)
+      else
+        error = { :errors => ["#{params[:id]} ec2 instance not found"] }
+        pretty_json_render(error, 404)
+      end
+    rescue => e
+      rescued_pretty_json_render(e,422)
+    end
+  end
+  
+  def start
+    begin
+      if @server = compute.servers.get(params[:id])
+        @server.start
+        pretty_json_render(true)
+      else
+        error = { :errors => ["#{params[:id]} ec2 instance not found"] }
+        pretty_json_render(error, 404)
+      end
+    rescue => e
+      rescued_pretty_json_render(e,422)
+    end
+  end
+  
+  def stop
+    begin
+      if @server = compute.servers.get(params[:id])
+        @server.stop
+        pretty_json_render(true)
+      else
+        error = { :errors => ["#{params[:id]} ec2 instance not found"] }
+        pretty_json_render(error, 404)
+      end
+    rescue => e
+      rescued_pretty_json_render(e,422)
     end
   end
     
@@ -50,13 +90,22 @@ class Api::V1::Compute::ServersController < Api::V1::Compute::BaseController
         pretty_json_render(error, 400)
       end
     rescue => e
-      if match = e.message.match(/<Code>(.*)<\/Code>[\s\\\w]+<Message>(.*)<\/Message>/m)
-        puts "#{match[1].split('.').last} => #{match[2]}"
-        error =  { :errors => ["#{match[1].split('.').last} => #{match[2]}"] }
-      else
-        error =  { :errors => [e.message] }
+      rescued_pretty_json_render(e,422)
+    end
+  end
+  
+  def destroy
+    begin
+      @server = compute.servers.get(params[:id])
+      raise "#{params[:id]} doesn't exist" unless @server
+      if @server.destroy
+        pretty_json_render(["#{params[:id]} was deleted successfully"])
+      else        
+        error = { :errors => ["#{params[:id]} wasn't deleted"]}
+        pretty_json_render(error, 404)
       end
-      pretty_json_render(error, 422)
+    rescue => e
+      rescued_pretty_json_render(e,422)
     end
   end  
 end
