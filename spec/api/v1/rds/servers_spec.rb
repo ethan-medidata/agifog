@@ -64,6 +64,7 @@ describe "/api/v1/rds/servers", :type => :api do
       attributes["id"].should == @instance_db.id
       modify_options = { :allocated_storage => 6 }.to_json 
       put "/api/v1/rds/servers/#{@instance_db.id}.json", modify_options
+      put last_response.inspect
       last_response.should be_ok
       attributes = JSON.parse(last_response.body)
       get "/api/v1/rds/servers/#{@instance_db.id}.json"
@@ -129,7 +130,8 @@ describe "/api/v1/rds/servers", :type => :api do
        }'
        last_response.status == 406
        errors = {"errors" => ["The request failed because its format is not valid; it could not be parsed"]}.to_json
-       last_response.body.should eql(errors)
+       # body has a pretty print json, if you compare it as string it will fail
+       last_response.body.should be_json_eql(errors)
     end
   end
   

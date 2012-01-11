@@ -10,6 +10,9 @@ Agifog::Application.routes.draw do
           end
         end
       end
+      namespace :compute do
+        resources :servers
+      end
     end
   end
 end

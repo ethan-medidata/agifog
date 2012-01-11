@@ -13,3 +13,5 @@
 # Ignore all logfiles and tempfiles.
 /log/*.log
 /tmp
+test_client.rb
+config/rack_mauth_settings.yml

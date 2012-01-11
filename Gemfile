@@ -60,4 +60,5 @@ group :test do
   gem "guard-spork"
   gem 'fakeweb'
   gem "vcr", "=2.0.0.beta1" #using beta2 you get: save_databag_item-databag_doesnt_exist.yml does not appear to be a valid VCR 2.0 cassette
+  gem "json_spec" # https://github.com/collectiveidea/json_spec
 end

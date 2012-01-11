@@ -1,4 +1,4 @@
-class Api::V1::Rds::BaseController < ActionController::Base
+class Api::V1::Compute::BaseController < ActionController::Base
   respond_to :json
   
   require 'fog'
@@ -15,18 +15,15 @@ class Api::V1::Rds::BaseController < ActionController::Base
     Fog.mock! 
   end
   
-  def rds
-    @rds ||= Fog::AWS::RDS.new
+  def compute
+    @compute ||= Fog::Compute::AWS.new
   end
   
-  
-  def rds_default_server_params
+  def compute_default_server_params
     {
-      :engine_version => "5.1.57", 
-      :allocated_storage => 5, 
-      :engine => 'mysql',
-      :flavor_id => "db.m1.small", 
-      :backup_retention_period => 0 
+      :key_name=>'agi-develop',
+      :groups=>'rodrigo-agi',
+      :image_id=>'ami-63be790a'
     }
   end
   
@@ -34,4 +31,5 @@ class Api::V1::Rds::BaseController < ActionController::Base
     # render(:json => JSON.pretty_generate(body) # doesn't do it right
     render(:json => JSON.pretty_generate(JSON.parse(body.to_json)), :status => status)
   end
+
 end

@@ -5,6 +5,7 @@ class Api::V1::Rds::SecurityGroupsController < Api::V1::Rds::BaseController
     begin
       if @security_groups = rds.security_groups
         render(:json => @security_groups)
+#        render(:json => JSON.pretty_generate(JSON.parse(@security_groups.to_json)))
       else
         error = { :errors => ["There was a problem retrieving the rds security_groups"]}
         render(:json => error, :status => 404)
