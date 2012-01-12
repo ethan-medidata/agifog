@@ -62,7 +62,7 @@ describe "/api/v1/rds/servers", :type => :api do
       last_response.should be_ok
       attributes = JSON.parse(last_response.body)
       attributes["id"].should == @instance_db.id
-      modify_options = { :allocated_storage => 6 }.to_json 
+      modify_options = {:server => { :allocated_storage => 6 }}.to_json 
       put "/api/v1/rds/servers/#{@instance_db.id}.json", modify_options
       put last_response.inspect
       last_response.should be_ok

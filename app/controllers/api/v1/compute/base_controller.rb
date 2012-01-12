@@ -41,4 +41,15 @@ class Api::V1::Compute::BaseController < ActionController::Base
     end
     pretty_json_render(error, status)
   end
+  
+  protected
+  
+  def load_params_parsed
+    begin
+      @params_parsed = JSON.parse(request.raw_post)
+    rescue JSON::ParserError
+      error =  { :errors => ["The request failed because its format is not valid; it could not be parsed"] }
+      pretty_json_render(error, 406) and return # 406 => :not_acceptable
+    end
+  end
 end

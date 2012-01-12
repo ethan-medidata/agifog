@@ -1,5 +1,8 @@
 class Api::V1::Compute::ServersController < Api::V1::Compute::BaseController
   
+  before_filter :load_params_parsed, :only => [:create]
+  
+  
   def index
     begin
       if @servers = compute.servers
@@ -75,18 +78,11 @@ class Api::V1::Compute::ServersController < Api::V1::Compute::BaseController
     
   def create
     begin
-      begin
-        new_ec2_instance = JSON.parse(request.raw_post)
-      rescue JSON::ParserError
-        error =  { :errors => ["The request failed because its format is not valid; it could not be parsed"] }
-        pretty_json_render(error, 406) and return # 406 => :not_acceptable
-      end
-  
-      ec2_instance = compute.servers.create(compute_default_server_params.merge(new_ec2_instance["server"]))
+      ec2_instance = compute.servers.create(compute_default_server_params.merge(@params_parsed["server"]))
       if ec2_instance
         render(:json => ec2_instance, :location => api_v1_compute_server_path(ec2_instance))
       else
-        error = { :errors => [ec2_instance.errros] }
+        error = { :errors => [ec2_instance.errors] }
         pretty_json_render(error, 400)
       end
     rescue => e

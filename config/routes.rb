@@ -19,8 +19,16 @@ Agifog::Application.routes.draw do
             put 'stop'
           end
         end
+        
+        resources :security_groups do
+          member do
+            put 'authorize'
+            put 'revoke'
+          end
+        end
       end
       
-    end
-  end
+      
+    end #v1
+  end #api
 end
