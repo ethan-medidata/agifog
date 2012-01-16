@@ -102,6 +102,108 @@ describe "/api/v1/compute/security_groups", :type => :api do
       end
     end
   end
+    
+  describe "Authorizations in a security group" do
+      before(:all) do
+        @sec_group = {:name => "spec-sg-authorize", :description => "sg for testing authorization and revoking"}
+        compute.security_groups.create(@sec_group)
+      end
+      
+      it "only accepts params contained in either a security_group hash or a network hash" do
+        put "/api/v1/compute/security_groups/#{@sec_group[:name]}/authorize.json", {:non_accepted_hash => {
+            :name => "default",
+            :owner => "0123456" }
+          }.to_json
+        last_response.status.should == 400
+        errors = {"errors" => ["It only accepts params contained in either a security_group hash or a network hash"]}.to_json
+         last_response.body.should be_json_eql(errors)
+      end
+      
+      it "Authorize a ec2 security group" do
+        put "/api/v1/compute/security_groups/#{@sec_group[:name]}/authorize.json", {:security_group => {
+            :group => "default",
+            :owner => "0123456" }
+          }.to_json
+        last_response.status.should == 200
+        last_response.body.should be_json_eql(["#{@sec_group[:name]} was authorized successfully"])
+      end
+      
+      it "Authorize ssh port with valid params" do
+        put "/api/v1/compute/security_groups/#{@sec_group[:name]}/authorize.json", {:network => {
+            :cidr => "0.0.0.0/0",
+            :from_port => "22",
+            :to_port => "22",
+            :ip_protocol => "tcp" }
+          }.to_json
+        last_response.status.should == 200
+        last_response.body.should be_json_eql(["#{@sec_group[:name]} was authorized successfully"])
+      end
+      
+      it "Authorize ssh port with missing params" do
+        put "/api/v1/compute/security_groups/#{@sec_group[:name]}/authorize.json", {:network => {
+            :cidr => "0.0.0.0/0",
+            :to_port => "22",
+            :ip_protocol => "tcp" }
+          }.to_json
+        last_response.status.should == 406
+        errors = {"errors" => ["from_port param is required"]}.to_json
+        last_response.body.should be_json_eql(errors)
+      end
+      
+  end
+  
+  
+  describe "Revoking permission in a security group" do
+      before(:all) do
+        @sec_group = {:name => "spec-sg-for-revoking", :description => "sg for testing authorization and revoking"}
+        sg = compute.security_groups.create(@sec_group)
+        sg.authorize_port_range(20..21, :cidr_ip => '0.0.0.0/0', :ip_protocol => 'tcp')
+        sg.authorize_group_and_owner('default','0123456')
+      end
+      
+      it "only accepts params contained in either a security_group hash or a network hash" do
+        put "/api/v1/compute/security_groups/#{@sec_group[:name]}/revoke.json", {:non_accepted_hash => {
+            :name => "default",
+            :owner => "0123456" }
+          }.to_json
+        last_response.status.should == 400
+        errors = {"errors" => ["It only accepts params contained in either a security_group hash or a network hash"]}.to_json
+        last_response.body.should be_json_eql(errors)
+      end
+      
+      it "Authorize a ec2 security group" do
+        put "/api/v1/compute/security_groups/#{@sec_group[:name]}/revoke.json", {:security_group => {
+            :group => "default",
+            :owner => "0123456" }
+          }.to_json
+        last_response.status.should == 200
+        last_response.body.should be_json_eql(["#{@sec_group[:name]} was revoked successfully"])
+      end
+      
+      it "Authorize ssh port with valid params" do
+        put "/api/v1/compute/security_groups/#{@sec_group[:name]}/revoke.json", {:network => {
+            :cidr => "0.0.0.0/0",
+            :from_port => "20",
+            :to_port => "21",
+            :ip_protocol => "tcp" }
+          }.to_json
+        last_response.status.should == 200
+        last_response.body.should be_json_eql(["#{@sec_group[:name]} was revoked successfully"])
+      end
+      
+      it "Authorize ssh port with missing params" do
+        put "/api/v1/compute/security_groups/#{@sec_group[:name]}/revoke.json", {:network => {
+            :cidr => "0.0.0.0/0",
+            :to_port => "21",
+            :ip_protocol => "tcp" }
+          }.to_json
+        last_response.status.should == 406
+        errors = {"errors" => ["from_port param is required"]}.to_json
+        last_response.body.should be_json_eql(errors)
+      end
+      
+  end
+  
 end
 
 

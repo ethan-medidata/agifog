@@ -1,6 +1,6 @@
 class Api::V1::Compute::SecurityGroupsController < Api::V1::Compute::BaseController
   
-  before_filter :load_params_parsed, :only => [:create, :authorize]
+  before_filter :load_params_parsed, :only => [:create, :authorize, :revoke]
   
   def index
     begin
@@ -58,10 +58,10 @@ class Api::V1::Compute::SecurityGroupsController < Api::V1::Compute::BaseControl
   end
   
   #Accpets two sets of params
-  # {:network => { :to_port => mandatory,
-  #           :from_port => mandatory,
-  #           :cidr => optional (default to 0.0.0.0/0)
-  #           :protocol => optional (default to tcp)
+  # {:network => {  :to_port => mandatory,
+  #                 :from_port => mandatory,
+  #                 :cidr => optional (default to 0.0.0.0/0)
+  #                 :ip_protocol => optional (default to tcp)
   #          }
   #       }
       
@@ -70,33 +70,140 @@ class Api::V1::Compute::SecurityGroupsController < Api::V1::Compute::BaseControl
   #                     }
   #             }
   
-  #def authorize
-  #  begin
-  #    if @security_group = compute.security_groups.get(params[:id])
-  #      if @params_parsed.key?("network")
-  #        # translate rest params to fog params
-  #         
-  #        if @security_group.authorize_cidrip(@params_parsed["cidr"])
-  #          pretty_json_render(["#{params[:id]} was authorized successfully"])
-  #        else
-  #          raise "Failed to authorize cidrip"
-  #        end 
-  #      elsif @params_parsed.key?("security_group")
-  #        if @security_group.authorize_ec2_security_group(@params_parsed["ec2name"],@params_parsed["ec2owner"])
-  #          pretty_json_render(["#{params[:id]} was authorized successfully"])
-  #        else 
-  #          raise "Failed to authorize ec2 sec group" 
-  #        end
-  #      else
-  #        raise "It only accetps tow sets of data: Network or Security Group"
-  #      end
-  #    else
-  #      error = { :errors => ["#{params[:id]} security group not found"] }
-  #      pretty_json_render(error, 404)   
-  #    end
-  #    
-  #  rescue => e
-  #    rescued_pretty_json_render(e,422)
-  #  end
-  #end
+  def authorize
+    begin
+      if @security_group = compute.security_groups.get(params[:id])
+        if @params_parsed.key?("security_group")
+          authorize_security_group
+        elsif @params_parsed.key?("network")
+          authorize_network
+        else
+          error = { :errors => ["It only accepts params contained in either a security_group hash or a network hash"] }
+          pretty_json_render(error, 400)
+        end
+      else
+        error = { :errors => ["#{params[:id]} security group not found"] }
+        pretty_json_render(error, 404)
+      end
+    rescue => e
+      rescued_pretty_json_render(e,422)
+    end
+  end  
+    
+  def revoke
+    begin
+      if @security_group = compute.security_groups.get(params[:id])
+        if @params_parsed.key?("security_group")
+          revoke_security_group
+        elsif @params_parsed.key?("network")
+          revoke_network
+        else
+          error = { :errors => ["It only accepts params contained in either a security_group hash or a network hash"] }
+          pretty_json_render(error, 400)
+        end
+      else
+        error = { :errors => ["#{params[:id]} security group not found"] }
+        pretty_json_render(error, 404)
+      end
+    rescue => e
+      rescued_pretty_json_render(e,422)
+    end
+  end
+
+
+
+    
+  private
+  
+  def revoke_network
+    begin
+      network = @params_parsed["network"]
+      raise ArgumentError.new "from_port param is required" unless from = network["from_port"] 
+      raise ArgumentError.new "to_port param is required" unless to = network["to_port"]
+      range = Range.new(*"#{from}..#{to}".split("..").map{|s|s.to_i})
+      options = {
+        'CidrIp'      => network["cidr"],
+        'IpProtocol'  => network["ip_protocol"]
+      }
+      
+      sg = @security_group.revoke_port_range(range, options)
+      if sg
+        render(:json => ["#{params[:id]} was revoked successfully"])
+      else
+        error = { :errors => [sg.errors] }
+        pretty_json_render(error, 400)
+      end
+    rescue ArgumentError => e
+      rescued_pretty_json_render(e, 406)
+    rescue => e
+      rescued_pretty_json_render(e, 422)
+    end
+  end
+  
+  def revoke_security_group
+    begin
+      sg_parm = @params_parsed["security_group"]
+      raise ArgumentError.new("name param is required") unless group = sg_parm["group"] 
+      raise ArgumentError.new("owner param is required") unless owner = sg_parm["owner"]
+
+      sg = @security_group.revoke_group_and_owner(group, owner)
+      if sg
+        render(:json => ["#{params[:id]} was revoked successfully"])
+      else
+        error = { :errors => [sg.errors] }
+        pretty_json_render(error, 400)
+      end
+    rescue ArgumentError => e
+      rescued_pretty_json_render(e, 406)
+    rescue => e
+      rescued_pretty_json_render(e, 422)
+    end
+  end
+  
+  def authorize_network
+    begin
+      network = @params_parsed["network"]
+      raise ArgumentError.new "from_port param is required" unless from = network["from_port"] 
+      raise ArgumentError.new "to_port param is required" unless to = network["to_port"]
+      range = Range.new(*"#{from}..#{to}".split("..").map{|s|s.to_i})
+      options = {
+        'CidrIp'      => network["cidr"],
+        'IpProtocol'  => network["ip_protocol"]
+      }
+      
+      sg = @security_group.authorize_port_range(range, options)
+      if sg
+        render(:json => ["#{params[:id]} was authorized successfully"])
+      else
+        error = { :errors => [sg.errors] }
+        pretty_json_render(error, 400)
+      end
+    rescue ArgumentError => e
+      rescued_pretty_json_render(e, 406)
+    rescue => e
+      rescued_pretty_json_render(e, 422)
+    end
+  end
+  
+  def authorize_security_group
+    begin
+      sg_parm = @params_parsed["security_group"]
+      raise ArgumentError.new("name param is required") unless group = sg_parm["group"] 
+      raise ArgumentError.new("owner param is required") unless owner = sg_parm["owner"]
+
+      sg = @security_group.authorize_group_and_owner(group, owner)
+      if sg
+        render(:json => ["#{params[:id]} was authorized successfully"])
+      else
+        error = { :errors => [sg.errors] }
+        pretty_json_render(error, 400)
+      end
+    rescue ArgumentError => e
+      rescued_pretty_json_render(e, 406)
+    rescue => e
+      rescued_pretty_json_render(e, 422)
+    end
+  end
+  
+
 end
