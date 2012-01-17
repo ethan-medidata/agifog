@@ -28,8 +28,8 @@ Agifog::Application.configure do
   # Expands the lines which load the assets
   config.assets.debug = true
   
-  conf = YAML.load_file(File.join(Rails.root, "config", "rack_mauth_settings.yml"))
-  config.middleware.use "Medidata::MAuthMiddleware", conf[:mauth_server]
+#  conf = YAML.load_file(File.join(Rails.root, "config", "rack_mauth_settings.yml"))
+#  config.middleware.use "Medidata::MAuthMiddleware", conf[:mauth_server]
   require 'eureka/api_document_middleware'
   require './config/api_document'
   config.middleware.use Eureka::ApiDocuments, :api_documents => [AgiFog::API]

@@ -55,24 +55,24 @@ describe "/api/v1/rds/servers", :type => :api do
   
 
   
-  describe "PUT on /api/v1/rds/servers/:name.json" do
-    
-    it "Modifying the security group" do 
-      get "/api/v1/rds/servers/#{@instance_db.id}.json"
-      last_response.should be_ok
-      attributes = JSON.parse(last_response.body)
-      attributes["id"].should == @instance_db.id
-      modify_options = {:server => { :allocated_storage => 6 }}.to_json 
-      put "/api/v1/rds/servers/#{@instance_db.id}.json", modify_options
-      put last_response.inspect
-      last_response.should be_ok
-      attributes = JSON.parse(last_response.body)
-      get "/api/v1/rds/servers/#{@instance_db.id}.json"
-      attributes = JSON.parse(last_response.body)
-      attributes["pending_modified_values"].should == { "AllocatedStorage"=>6 } # Amazon stores different than fog
-    end
-  end
-       
+#  describe "PUT on /api/v1/rds/servers/:name.json" do
+#    
+#    it "Modifying the security group" do 
+#      get "/api/v1/rds/servers/#{@instance_db.id}.json"
+#      last_response.should be_ok
+#      attributes = JSON.parse(last_response.body)
+#      attributes["id"].should == @instance_db.id
+#      modify_options = {:server => { :allocated_storage => 6 }}.to_json 
+#      put "/api/v1/rds/servers/#{@instance_db.id}.json", modify_options
+#      put last_response.inspect
+#      last_response.should be_ok
+#      attributes = JSON.parse(last_response.body)
+#      get "/api/v1/rds/servers/#{@instance_db.id}.json"
+#      attributes = JSON.parse(last_response.body)
+#      attributes["pending_modified_values"].should == { "AllocatedStorage"=>6 } # Amazon stores different than fog
+#    end
+#  end
+#       
        
 
   describe "DELETE on /api/v1/rds/servers/:id" do
