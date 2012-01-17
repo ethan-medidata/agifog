@@ -11,6 +11,10 @@ Agifog::Application.routes.draw do
         end
       end
       
+      namespace :elb do
+        resources :load_balancers
+      end
+      
       namespace :compute do
         resources :servers do
           member do
@@ -19,7 +23,6 @@ Agifog::Application.routes.draw do
             put 'stop'
           end
         end
-        
         resources :security_groups do
           member do
             put 'authorize'
