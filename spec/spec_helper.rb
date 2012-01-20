@@ -14,6 +14,14 @@ end
 
 Fog.mock!
 
+def elb
+  @elb ||= Fog::AWS::ELB.new
+end
+
+def availability_zones
+  @availability_zones ||= Fog::Compute[:aws].describe_availability_zones('state' => 'available').body['availabilityZoneInfo'].collect{ |az| az['zoneName'] }
+end
+
 # Requires supporting ruby files with custom matchers and macros, etc,
 # in spec/support/ and its subdirectories.
 Dir[Rails.root.join("spec/support/**/*.rb")].each {|f| require f}

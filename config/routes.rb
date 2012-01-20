@@ -12,7 +12,9 @@ Agifog::Application.routes.draw do
       end
       
       namespace :elb do
-        resources :load_balancers
+        resources :load_balancers do
+          resources :instances
+        end
       end
       
       namespace :compute do

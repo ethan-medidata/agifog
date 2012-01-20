@@ -61,14 +61,36 @@ describe "/api/v1/elb/load_balancers", :type => :api do
         last_response.status.should == 404
       end
     end
+    describe "POST on /api/v1/elb/load_balancers.json" do
+      it "Create an ec2 instance" do
+        post "/api/v1/elb/load_balancers.json", {:load_balancer => {
+            :id => "lb-one",
+            :availability_zones => ["us-east-1a"] }
+          }.to_json
+        last_response.status == 201
+        attributes = JSON.parse(last_response.body)
+        attributes["id"].should == "lb-one"
+        attributes["availability_zones"].should == ["us-east-1a"]
+        attributes["instances"].should == []
+        attributes["ListenerDescriptions"].select do |listner|
+          listner["Listener"]["InstancePort"].should == 80
+        end
+      end
+      
+      it "Unvalid json format" do
+         post "/api/v1/rds/servers.json", '{
+             "load_balancer": {
+                 "id": "lb-one"
+                 "availability_zone": "us-east-1a"
+             }
+         }'
+         last_response.status == 406
+         errors = {"errors" => ["The request failed because its format is not valid; it could not be parsed"]}.to_json
+         # body has a pretty print json, if you compare it as string it will fail
+         last_response.body.should be_json_eql(errors)
+      end
+    end
   end
   
 end
 
-def elb
-  @elb ||= Fog::AWS::ELB.new
-end
-
-def availability_zones
-  @availability_zones ||= Fog::Compute[:aws].describe_availability_zones('state' => 'available').body['availabilityZoneInfo'].collect{ |az| az['zoneName'] }
-end
