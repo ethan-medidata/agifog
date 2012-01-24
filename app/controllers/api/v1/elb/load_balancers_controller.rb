@@ -58,7 +58,4 @@ class Api::V1::Elb::LoadBalancersController < Api::V1::Elb::BaseController
     end
   end
 
-  def instances
-    
-  end
 end

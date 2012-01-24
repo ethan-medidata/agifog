@@ -8,8 +8,9 @@ require 'rack/test'
 require 'fog'
 require 'fog/core/credentials'
 
+Fog.credentials_path= "config/.fog"
 unless Fog.respond_to?('credentials')
-   abort('Please create the .fog file with the right credentials') 
+   abort('Please create a config/.fog file with the right credentials') 
 end
 
 Fog.mock!

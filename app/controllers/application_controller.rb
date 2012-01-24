@@ -7,9 +7,9 @@ class ApplicationController < ActionController::Base
   require 'fog/core/credentials'
   require 'yajl/json_gem' # this is the compatable version
 
-
+  Fog.credentials_path= "config/.fog"
   unless Fog.respond_to?('credentials')
-     abort('Please create the .fog file with the right credentials') 
+     abort('Please create a config/.fog file with the right credentials') 
   end
 
   if Rails.env == 'test'
