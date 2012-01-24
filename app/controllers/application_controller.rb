@@ -33,6 +33,10 @@ class ApplicationController < ActionController::Base
     pretty_json_render(error, status)
   end
   
+  def app_status
+    pretty_json_render('ok',200)
+  end
+  
   protected
   
   def load_params_parsed
@@ -43,6 +47,8 @@ class ApplicationController < ActionController::Base
       pretty_json_render(error, 406) and return # 406 => :not_acceptable
     end
   end
+  
+
   
 
 end

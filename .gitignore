@@ -15,3 +15,5 @@
 /tmp
 test_client.rb
 config/rack_mauth_settings.yml
+config/.fog
+config/.fog-rodrigo
