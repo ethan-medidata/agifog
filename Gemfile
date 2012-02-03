@@ -38,9 +38,9 @@ gem 'yajl-ruby'
 #gem 'fog'
 gem 'fog', :git => 'git://github.com/fog/fog.git'
 
-gem 'rack-mauth', :git => "git@github.com:mdsol/rack-mauth.git", :tag => "v0.1.2", :require => 'rack/mauth'
-gem 'mauth_signer', :git => 'git@github.com:mdsol/mauth_signer.git', :tag => 'v0.6.3'
-#gem 'eureka-client', :git => 'git@github.com:/mdsol/eureka-client.git', :ref => '91b3db5'
+#gem 'rack-mauth', :git => "git@github.com:mdsol/rack-mauth.git", :tag => "v0.1.2", :require => 'rack/mauth'
+#gem 'mauth_signer', :git => 'git@github.com:mdsol/mauth_signer.git', :tag => 'v0.6.3'
+#gem 'eureka-client', :git => 'git@github.com:mdsol/eureka-client.git', :ref => 'c4c98a4'
 
 group :test do
   gem 'database_cleaner'

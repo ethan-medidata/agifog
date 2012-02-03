@@ -1,4 +1,5 @@
 class Api::V1::Rds::BaseController < ApplicationController
+  skip_before_filter :verify_authenticity_token
   
   def rds
     @rds ||= Fog::AWS::RDS.new
