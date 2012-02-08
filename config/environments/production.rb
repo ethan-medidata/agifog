@@ -59,9 +59,13 @@ Agifog::Application.configure do
   config.active_support.deprecation = :notify
 
   conf = YAML.load_file(File.join(Rails.root, "config", "rack_mauth_settings.yml"))
+  conf[Rails.env.to_sym][:private_key] = File.read(conf[Rails.env.to_sym][:private_key_file]) 
   config.middleware.use "Medidata::MAuthMiddleware", conf[Rails.env.to_sym]
   
-  
+
+
+
+
 #  conf = YAML.load_file(File.join(Rails.root, "config", "rack_mauth_settings.yml"))
 #  config.middleware.use "Medidata::MAuthMiddleware", conf[:mauth_server]
 end
