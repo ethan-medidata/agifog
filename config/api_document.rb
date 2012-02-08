@@ -1,8 +1,8 @@
 module AgiFog
 API=
     {
-                       "id" => "agi_fog:v1",
-                     "name" => "agi_fog",
+                       "id" => "agifog:v1",
+                     "name" => "agifog",
                   "version" => "v1",
                     "title" => "agi fog",
               "description" => "Service to talk to aws",
