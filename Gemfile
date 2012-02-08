@@ -43,7 +43,7 @@ gem 'rack-mauth', :git => "git@github.com:mdsol/rack-mauth.git", :tag => "v1.1.0
 #gem 'mauth_signer', :git => 'git@github.com:mdsol/mauth_signer.git', :tag => 'v1.0.3'
 gem 'mauth_signer', :git => 'git@github.com:mdsol/mauth_signer.git', :ref => '4e03b8e'
 
-gem 'eureka-client', :git => 'git@github.com:mdsol/eureka-client.git', :ref => '44e89c4fe5e702a811952fcb3553d59a5b499112'
+gem 'eureka-client', :git => 'git@github.com:mdsol/eureka-client.git', :ref => 'c0d9274'
 
 group :test do
   gem 'database_cleaner'

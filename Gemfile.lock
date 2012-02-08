@@ -15,18 +15,18 @@ GIT
 
 GIT
   remote: git@github.com:mdsol/eureka-client.git
-  revision: 44e89c4fe5e702a811952fcb3553d59a5b499112
-  ref: 44e89c4fe5e702a811952fcb3553d59a5b499112
+  revision: c0d9274711d20d0888a521006b39c31f650aaf4b
+  ref: c0d9274
   specs:
     eureka-client (0.4.0)
       addressable (>= 2.2.3)
       autoparse (>= 0.3.0)
       extlib (>= 0.9.15)
       faraday (~> 0.7.0)
+      faraday_middleware (~> 0.8)
       json-schema (~> 1.0)
       launchy (>= 2.0.0)
       multi_json (>= 1.0.0)
-      rest-client
       signet (>= 0.3.1)
 
 GIT
@@ -118,6 +118,8 @@ GEM
       addressable (~> 2.2)
       multipart-post (~> 1.1)
       rack (~> 1.1)
+    faraday_middleware (0.8.4)
+      faraday (>= 0.7.4, < 0.9)
     ffi (1.0.11)
     formatador (0.2.1)
     gherkin (2.7.7)
@@ -191,8 +193,6 @@ GEM
     rb-fsevent (0.9.0)
     rdoc (3.12)
       json (~> 1.4)
-    rest-client (1.6.7)
-      mime-types (>= 1.16)
     rspec (2.8.0)
       rspec-core (~> 2.8.0)
       rspec-expectations (~> 2.8.0)
