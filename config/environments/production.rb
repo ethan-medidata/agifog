@@ -58,12 +58,19 @@ Agifog::Application.configure do
   # Send deprecation notices to registered listeners
   config.active_support.deprecation = :notify
 
-  conf = YAML.load_file(File.join(Rails.root, "config", "mauth.yml"))
-  conf[Rails.env]['private_key'] = File.read(conf[Rails.env]['private_key_file']) 
-  config.middleware.use "Medidata::MAuthMiddleware", conf[Rails.env].symbolize_keys
+  mauth_conf = YAML.load_file(File.join(Rails.root, "config", "mauth.yml"))
+  mauth_conf[Rails.env]['private_key'] = File.read(mauth_conf[Rails.env]['private_key_file']) 
+  config.middleware.use "Medidata::MAuthMiddleware", mauth_conf[Rails.env].symbolize_keys
   
 
-
+  require 'eureka-client'
+  require './config/api_document'
+  eureka_conf = YAML.load(File.read(ENV['EUREKA_CONFIG_YML'] || File.join(Rails.root, 'config/eureka.yml')))
+  eureka_conf.update('mauth_config' => mauth_conf)
+  eureka_client = Eureka::Client.new(eureka_conf)
+  
+  eureka_client.post_apis!([AgiFog::API])
+  eureka_client.deploy!
 
 
 #  conf = YAML.load_file(File.join(Rails.root, "config", "rack_mauth_settings.yml"))
