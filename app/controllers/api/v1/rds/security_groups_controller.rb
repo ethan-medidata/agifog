@@ -26,7 +26,7 @@ class Api::V1::Rds::SecurityGroupsController < Api::V1::Rds::BaseController
       if @security_group = rds.security_groups.get(params[:id])
         render(:json => @security_group)
       else
-        error = { :errors => ["#{params[:id]} rds security_group not found"] }
+        error = { :errors => ["#{params[:id]} rds security group not found"] }
         render(:json => error, :status => 404)
       end
     rescue => e

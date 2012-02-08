@@ -13,16 +13,12 @@ describe "/api/v1/compute/servers", :type => :api do
   
     before(:all) do
         compute.key_pairs.create(:name=>'rspec-agi-key')
-        compute.security_groups.create(:name => "rspec-agi-sg", :description => "rspec-agi-sg desc")
-        compute.security_groups.create(:name => "rspec-agi-sg-second", :description => "rspec-agi-sg-scnd desc")
+        compute.security_groups.create(:name => "servers-agi-sg", :description => "servers-agi-sg desc")
+        compute.security_groups.create(:name => "servers-agi-sg-second", :description => "servers-agi-sg-scnd desc")
       
-        puts "Let's create a new ec2_instance"
-        @ec2_instance = compute.servers.create(:key_name => 'rspec-agi-key', :groups => ['rspec-agi-sg'])
-        puts "Waiting until #{@ec2_instance.id} is ready"
+        @ec2_instance = compute.servers.create(:key_name => 'rspec-agi-key', :groups => ['servers-agi-sg'])
         @ec2_instance.wait_for { ready? }
-        puts "Let's create a new ec2_instance"
-        @last_instance = compute.servers.create(:key_name => 'rspec-agi-key', :groups => ['rspec-agi-sg'])
-        puts "Waiting until #{@last_instance.id} is ready"
+        @last_instance = compute.servers.create(:key_name => 'rspec-agi-key', :groups => ['servers-agi-sg'])
         @last_instance.wait_for { ready? }
     end
     
@@ -83,7 +79,7 @@ describe "/api/v1/compute/servers", :type => :api do
       it "Create an ec2 instance" do
         post "/api/v1/compute/servers.json", {:server => {
             :flavor_id => "m1.small",
-            :groups => ["rspec-agi-sg", "rspec-agi-sg-second"],
+            :groups => ["servers-agi-sg", "servers-agi-sg-second"],
             :key_name => 'rspec-agi-key',
             :tags => {'key' => 'value'},
             :availability_zone => "us-east-1a" }
@@ -94,8 +90,8 @@ describe "/api/v1/compute/servers", :type => :api do
         attributes["availability_zone"].should == "us-east-1a"
         # Fog mocking bug workaround. When using a tag, the state gets to running instead of pending
         %w{pending running}.should include(attributes["state"])
-        attributes["groups"].should include("rspec-agi-sg")
-        attributes["groups"].should include("rspec-agi-sg-second")
+        attributes["groups"].should include("servers-agi-sg")
+        attributes["groups"].should include("servers-agi-sg-second")
         attributes["key_name"].should == 'rspec-agi-key'
         attributes["tags"].should == {'key' => 'value'}
       end

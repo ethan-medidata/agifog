@@ -13,14 +13,21 @@ describe "/api/v1/elb/load_balancers/:load_balancer_id/instances", :type => :api
     @ec2_instance_one_b.wait_for { ready? }
   end
   
-  it "GET /api/v1/elb/load_balancers/:load_balancer_id/instances should be empty" do
+  after(:all) do
+    @elb_one.destroy
+    @ec2_instance_one_a.destroy
+    @ec2_instance_one_b.destroy
+  end
+    
+  
+  it "a new load balancer doesn't have instances" do
     get "/api/v1/elb/load_balancers/#{@elb_one.id}/instances"
     last_response.should be_ok
     empty_array=[]
     last_response.body.should be_json_eql(empty_array)
   end
   
-  describe "show instances attach to a load balancer" do
+  describe "show instances attached to a load balancer" do
     before(:all) do
       begin
         @elb_one.register_instances(@ec2_instance_one_a.id)
@@ -34,14 +41,14 @@ describe "/api/v1/elb/load_balancers/:load_balancer_id/instances", :type => :api
       end
     end
     
-    it "GET /api/v1/elb/load_balancers/:load_balancer_id/instances" do
+    it "shows all the instances attached to a load balancer" do
       get "/api/v1/elb/load_balancers/#{@elb_one.id}/instances"
       last_response.should be_ok
       attributes = JSON.parse(last_response.body)
       attributes.size.should == 2
     end
     
-    it "GET /api/v1/elb/load_balancers/:load_balancer_id/instances/:id" do
+    it "shows information about a specifc instance attached to a load balancer" do
       get "/api/v1/elb/load_balancers/#{@elb_one.id}/instances/#{@ec2_instance_one_a.id}"
       last_response.should be_ok
       attributes = JSON.parse(last_response.body)
@@ -59,7 +66,12 @@ describe "/api/v1/elb/load_balancers/:load_balancer_id/instances", :type => :api
       @elb_two.wait_for { ready? }
     end
     
-    it "POST on /api/v1/elb/load_balancers/:load_balancer_id/instances" do
+    after(:all) do
+      @elb_two.destroy
+    end
+      
+    
+    it "attaches an instance to a load balancer" do
       post "/api/v1/elb/load_balancers/#{@elb_two.id}/instances", {:instance => {:id => @ec2_instance_one_a.id}}.to_json
       last_response.status == 201
       attributes = JSON.parse(last_response.body)
@@ -72,7 +84,7 @@ describe "/api/v1/elb/load_balancers/:load_balancer_id/instances", :type => :api
       last_response.should be_ok
     end
     
-    it "DELETE on /api/v1/elb/load_balancers/:load_balancer_id/instances/:instance_id" do
+    it "detaches an instance from a load balancer" do
       delete "/api/v1/elb/load_balancers/#{@elb_two.id}/instances/#{@ec2_instance_one_a.id}"
       last_response.should be_ok
       
@@ -80,7 +92,7 @@ describe "/api/v1/elb/load_balancers/:load_balancer_id/instances", :type => :api
       last_response.status == 404
     end
     
-    it "DELETE on /api/v1/elb/load_balancers/:load_balancer_id/instances/:instance_id" do
+    it "fails when try to detach an instance not attached" do
       delete "/api/v1/elb/load_balancers/#{@elb_two.id}/instances/#{@ec2_instance_one_a.id}"
       last_response.status == 404
       errors = {"errors" => ["#{@ec2_instance_one_a.id} isn't registered"]}.to_json

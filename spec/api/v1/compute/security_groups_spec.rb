@@ -2,7 +2,7 @@ require 'spec_helper'
 
 
 describe "/api/v1/compute/security_groups", :type => :api do
-  it "should return an empty array" do
+  it "always includes the default security group" do
     get '/api/v1/compute/security_groups.json'
     last_response.should be_ok
     attributes = JSON.parse(last_response.body)
@@ -11,7 +11,7 @@ describe "/api/v1/compute/security_groups", :type => :api do
     end
   end
   
-  describe "Using prepopulated data" do
+  describe "basic operations on security groups" do
   
     before(:all) do
       @sec_group_one = {:name => "rspec-agi-sg", :description => "rspec-agi-sg desc"}
@@ -21,9 +21,9 @@ describe "/api/v1/compute/security_groups", :type => :api do
       
     end
     
-    describe "GET on /api/v1/compute/security_groups" do
+    describe "show security groups" do
     
-      it "should return every ec2 instances" do
+      it "returns every security group" do
         get '/api/v1/compute/security_groups.json'
         last_response.should be_ok
         attributes = JSON.parse(last_response.body)
@@ -34,8 +34,8 @@ describe "/api/v1/compute/security_groups", :type => :api do
       end
     end
     
-    describe "GET on /api/v1/compute/security_groups/:id" do
-      it "should return an ec2 instance" do
+    describe "show a specific security group" do
+      it "should return a security group" do
         get "/api/v1/compute/security_groups/#{@sec_group_second[:name]}.json"
         last_response.should be_ok
         attributes = JSON.parse(last_response.body)
@@ -43,7 +43,7 @@ describe "/api/v1/compute/security_groups", :type => :api do
         attributes["description"].should == @sec_group_second[:description]
       end
       
-      it "should return 404 when the ec2 instance doesn't exist" do
+      it "should return 404 when the security group doesn't exist" do
         get "/api/v1/compute/security_groups/dontexist.json"
         last_response.should_not be_ok
         last_response.status.should == 404
@@ -52,9 +52,9 @@ describe "/api/v1/compute/security_groups", :type => :api do
       end
     end
     
-    describe "POST on /api/v1/compute/security_groups" do
+    describe "creation" do
       
-      it "Create a security group" do
+      it "creates a security group successfuly" do
         post "/api/v1/compute/security_groups.json", {:security_group => {
             :name => "new-sg-from-agifog",
             :description => "new security group from agifog" }
@@ -65,7 +65,7 @@ describe "/api/v1/compute/security_groups", :type => :api do
         attributes["description"].should == "new security group from agifog"
       end
       
-      it "Invalid params" do
+      it "fails whith invalid params" do
         post "/api/v1/compute/security_groups.json", {:security_group => {
             :id => "failing-sg-from-agifog",
             :description => "it's not going to work" }
@@ -75,8 +75,8 @@ describe "/api/v1/compute/security_groups", :type => :api do
         attributes["errors"].should == ["name is required for this operation"]
       end
       
-      it "Invalid json format" do
-         post "/api/v1/rds/security_groups.json", '{
+      it "fails when the data has an invalid json format" do
+         post "/api/v1/compute/security_groups.json", '{
              "server": {
                  "name": "bad-formating-sg"
                  "description": "this is gonna fail"
@@ -89,9 +89,9 @@ describe "/api/v1/compute/security_groups", :type => :api do
       end
     end
     
-    describe "DELETE on /api/v1/security_groups/servers/:id" do
+    describe "delete" do
 
-      it "Delete a rds instance" do
+      it "Delete a compute security group" do
         delete "/api/v1/compute/security_groups/#{@sec_group_one[:name]}.json"
         last_response.should be_ok
         # verify that doesn't exist anymore

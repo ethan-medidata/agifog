@@ -6,17 +6,12 @@ describe "/api/v1/rds/servers", :type => :api do
     # let's see if we can reuse an existing test-spec instance so we don't have to create it
     instances_db = rds.servers.select{|s| s.id =~ /^test-spec/ && s.state == 'available'}
     if instances_db.empty?
-      puts "Let's create a new instance_db"
       @instance_db = rds.servers.create(rds_default_server_params)
-      puts "Waiting until #{@instance_db.id} is ready"
       @instance_db.wait_for { ready? }
-      puts "Let's create a new instance_db"
       @last_db = rds.servers.create(rds_default_server_params.merge(:id=>'test-spec-last', :db_name=>'otherdb'))
-      puts "Waiting until #{@instance_db.id} is ready"
       @last_db.wait_for { ready? }
     elsif
       @instance_db = instances_db.first
-      puts "Reusing #{@instance_db.id}"
     end
   end
   
@@ -88,7 +83,11 @@ describe "/api/v1/rds/servers", :type => :api do
     end
   end
   
+  # http://docs.amazonwebservices.com/AmazonRDS/latest/APIReference/API_CreateDBInstance.html
   describe "POST on /api/v1/rds/servers" do
+    before(:all) do
+      @ec2_sec_group = Fog::Compute[:aws].security_groups.create(:name => 'rds-sg-one', :description => 'fog test')
+    end
     
     it "Create a rds instance" do
       post "/api/v1/rds/servers.json", {:server => {
@@ -133,37 +132,37 @@ describe "/api/v1/rds/servers", :type => :api do
        # body has a pretty print json, if you compare it as string it will fail
        last_response.body.should be_json_eql(errors)
     end
+  
+    it "Create a rds instance specifing a security group" do
+      post "/api/v1/rds/servers.json", {:server => {
+          :id => "test-spec-12346",
+          :flavor_id => "db.m1.small",
+          :db_name => "testspec",
+          :allocated_storage => 5,
+          :engine => 'MySQL',
+          :engine_version => "5.1.57",
+          :master_username => "testspec",
+          :password => "testspec01",
+          :allocated_storage => 5, 
+          :engine => 'mysql',
+          :flavor_id => "db.m1.small",
+          :security_group_names => [@ec2_sec_group.name] }
+        }.to_json
+      last_response.status == 201
+      attributes = JSON.parse(last_response.body)
+      attributes["id"].should == "test-spec-12346"
+      attributes["flavor_id"].should == "db.m1.small"
+      attributes["allocated_storage"].should == 5
+      # default values when non specifiy
+      pending "fog mocking doesn't support passing security_group_names" do
+        attributes["db_security_groups"][0]["DBSecurityGroupName"].should == @ec2_sec_group.name
+        attributes["multi_az"].should == false
+        attributes["state"].should == "creating"
+      end
+    end
   end
   
 end
     
     
     
-def rds
-  @rds ||= Fog::AWS::RDS.new
-end
-
-def rds_default_server_params
-  {
-    :id => "test-spec-" + uniq_id,
-    :flavor_id => "db.m1.small",
-    :db_name => "testspec",
-    :security_group_names => ['cloud-rds', 'parley-aarontest'],
-    :allocated_storage => 5,
-    :engine => 'MySQL',
-    :engine_version => "5.1.57",
-    :master_username => "testspec",
-    :password => "testspec01",
-    :multi_az => false,
-    :availability_zone => "us-east-1c",
-    :backup_retention_period => 0,
-    :engine_version => "5.1.57", 
-    :allocated_storage => 5, 
-    :engine => 'mysql',
-    :flavor_id => "db.m1.small", 
-  }
-end
-
-def uniq_id
-  SecureRandom.hex(4)
-end

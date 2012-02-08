@@ -23,6 +23,35 @@ def availability_zones
   @availability_zones ||= Fog::Compute[:aws].describe_availability_zones('state' => 'available').body['availabilityZoneInfo'].collect{ |az| az['zoneName'] }
 end
 
+def rds
+  @rds ||= Fog::AWS::RDS.new
+end
+
+def rds_default_server_params
+  {
+    :id => "test-spec-" + uniq_id,
+    :flavor_id => "db.m1.small",
+    :db_name => "testspec",
+    :security_group_names => ['cloud-rds', 'parley-aarontest'],
+    :allocated_storage => 5,
+    :engine => 'MySQL',
+    :engine_version => "5.1.57",
+    :master_username => "testspec",
+    :password => "testspec01",
+    :multi_az => false,
+    :availability_zone => "us-east-1c",
+    :backup_retention_period => 0,
+    :engine_version => "5.1.57", 
+    :allocated_storage => 5, 
+    :engine => 'mysql',
+    :flavor_id => "db.m1.small", 
+  }
+end
+
+def uniq_id
+  SecureRandom.hex(4)
+end
+
 # Requires supporting ruby files with custom matchers and macros, etc,
 # in spec/support/ and its subdirectories.
 Dir[Rails.root.join("spec/support/**/*.rb")].each {|f| require f}

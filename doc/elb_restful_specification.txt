@@ -1,0 +1,116 @@
+AgiFog elb restful specification
+
+#REST SPECIFICATION
+
+
+#LOAD_BALANCERS
+
+  #default values at load_balancer creation time, every availability_zone and port 80 and 443
+
+	@availability_zones = Compute[:aws].describe_availability_zones('state' => 'available').body['availabilityZoneInfo'].collect{ |az| az['zoneName'] }
+
+
+   listeners = [{
+            'Listener' => {
+              'LoadBalancerPort' =>80, 'InstancePort' => 80, 'Protocol' => 'HTTP'
+            },
+            'PolicyNames' => []
+          }, {
+            'Listener' => {
+              'LoadBalancerPort' => 443, 'InstancePort' => 443, 'Protocol' => 'TCP'
+            },
+            'PolicyNames' => [] # cookie stickiness?
+          }]
+      AWS[:elb].load_balancers.create(:id => 'rodrigo-tres' , :availability_zones => @availability_zones, 'ListenerDescriptions' => listeners)
+
+
+
+
+   # elb.load_balancers.create # it will use the default values of above if not specified
+POST {:id=> 'load_balancer_name', :availability_zones => 'us-east-1a' } /api/v1/elb/load_balancers 
+  
+  elb.load_balancers
+GET /api/v1/elb/load_balancers
+
+  elb.load_balancers.get('load_balancer_name')
+GET /api/v1/elb/load_balancers/:load_balancer
+
+#HEALTH_CHECK
+   # A load_balancer can only have ONE healtcheck, does it mean that the resource should be singular? # ask this in stackoverflow*
+   load_balancer.health_check
+GET /api/v1/elb/load_balancers/:load_balancer/health_check
+
+  # configure_health_check
+  # AWS[:elb].load_balancers.get('rodrigo-uno').configure_health_check(health_check)
+POST /api/v1/elb/load_balancers/:load_balancer/health_checks
+{ health_check = {
+        'Target' => 'HTTP:80/index.html',
+        'Interval' => 10,
+        'Timeout' => 5,
+        'UnhealthyThreshold' => 2,
+        'HealthyThreshold' => 3
+      } }
+
+
+#ATTACH/DETACH - IN_SERVICE/OUT_OF_SERVICE INSTANCES
+  show instances and instance_health
+GET /api/v1/elb/load_balancers/:load_balancer/instances
+
+  register_instances (it enables the availability zone if necessary)
+POST {:instance =>{:id=> 'instance-id' } /api/v1/elb/load_balancers/:load_balancer/instances
+
+  deregister_instances (it disables the availability zone if necessary)
+DELETE /api/v1/elb/load_balancers/:load_balancer/instances/:instance_id
+
+  instances_in_service # put an instance in service
+PUT {:state => 'InService'} /api/v1/elb/load_balancers/:load_balancer/instances/:instance_id
+
+  instances_out_of_service
+PUT {:state => 'OutOfService'} /api/v1/elb/load_balancers/:load_balancer/instances/:instance_id
+
+#AVAILABILITY ZONES: THIS ISN'T NECESARY, availability zones will be added when instances are registered
+
+  elb.load_balancers.first.availability_zones
+GET /api/v1/elb/load_balancers/:load_balancer/availability_zones
+
+  enable_availability_zones
+POST {:availability_zone => 'availability_zone' } /api/v1/elb/load_balancers/:load_balancer/availability_zones
+
+  disable_availability_zones
+DELETE /api/v1/elb/load_balancers/:load_balancer/availability_zones/:availability_zone
+
+
+#LISTENERS
+
+  listeners
+GET /api/v1/elb/load_balancers/:load_balancer/listeners
+
+  add a new listener
+  #elb.last.listeners.create({'protocol' => 'HTTP', 'lb_port' => 1025, 'instance_port' => 1025})
+POST {'protocol' => 'HTTP', 'lb_port' => 1025, 'instance_port' => 1025} /api/v1/elb/load_balancers/:load_balancer/listeners
+
+ # destroy a listener
+ elb.last.listeners.get(1025).destroy
+DELETE /api/v1/elb/load_balancers/:load_balancer/listeners/:lb_port
+
+
+#POLICIES
+
+  # create policies, cookie_stickiness can be either :app or :lb
+  elb.load_balancers.last.policies.create(:id=>'bla',:cookie=>'jar',:cookie_stickiness => :app)
+  elb.load_balancers.last.policies.create(:id=>'blas',:cookie=>'jar',:cookie_stickiness => :lb, :expiration => nil)
+POST /api/v1/elb/load_balancers/:load_balancer/policies
+{:policy => {   :id=>'blas',
+                      :cookie=>'jar',
+			:cookie_stickiness => :lb, # or :app
+                      :expiration => nil 
+}
+
+  # show policy
+  elb.load_balancers.last.policies.get('bla')
+GET /api/v1/elb/load_balancers/:load_balancer/policies/:policy_id
+
+  # policies
+GET /api/v1/elb/load_balancers/:load_balancer/policies
+
+# security groups
