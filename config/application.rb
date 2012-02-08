@@ -1,6 +1,10 @@
 require File.expand_path('../boot', __FILE__)
 
-require 'rails/all'
+#require 'rails/all'
+require "action_controller/railtie"
+require "active_resource/railtie"
+require "rails/test_unit/railtie"
+require "sprockets/railtie"
 # http://pivotallabs.com/users/jdean/blog/articles/1419-building-a-fast-lightweight-rest-service-with-rails-3-
 
 if defined?(Bundler)
