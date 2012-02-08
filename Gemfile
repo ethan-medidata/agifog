@@ -5,18 +5,18 @@ gem 'rails', '3.1.3'
 # Bundle edge Rails instead:
 # gem 'rails',     :git => 'git://github.com/rails/rails.git'
 
-gem 'sqlite3'
+#gem 'sqlite3'
 
 
 # Gems used only for assets and not required
 # in production environments by default.
-group :assets do
-  gem 'sass-rails',   '~> 3.1.5'
-  gem 'coffee-rails', '~> 3.1.1'
-  gem 'uglifier', '>= 1.0.3'
-end
+#group :assets do
+#  gem 'sass-rails',   '~> 3.1.5'
+#  gem 'coffee-rails', '~> 3.1.1'
+#  gem 'uglifier', '>= 1.0.3'
+#end
 
-gem 'jquery-rails'
+#gem 'jquery-rails'
 
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
@@ -30,16 +30,18 @@ gem 'jquery-rails'
 # To use debugger
 # gem 'ruby-debug19', :require => 'ruby-debug'
 
-gem 'haml'				# it replaces erb making views much cleaner
-gem 'haml-rails', :group => :development
-gem 'simple_form'		# Cleanest way to write a form view
+#gem 'haml'				# it replaces erb making views much cleaner
+#gem 'haml-rails', :group => :development
+#gem 'simple_form'		# Cleanest way to write a form view
 
 gem 'yajl-ruby'
 #gem 'fog'
 gem 'fog', :git => 'git://github.com/fog/fog.git'
 
-#gem 'rack-mauth', :git => "git@github.com:mdsol/rack-mauth.git", :tag => "v0.1.2", :require => 'rack/mauth'
-#gem 'mauth_signer', :git => 'git@github.com:mdsol/mauth_signer.git', :tag => 'v0.6.3'
+
+gem 'rack-mauth', :git => "git@github.com:mdsol/rack-mauth.git", :tag => "v1.1.0", :require => 'rack/mauth'
+gem 'mauth_signer', :git => 'git@github.com:mdsol/mauth_signer.git', :tag => 'v1.0.3'
+
 #gem 'eureka-client', :git => 'git@github.com:mdsol/eureka-client.git', :ref => 'c4c98a4'
 
 group :test do
