@@ -5,7 +5,7 @@ gem 'rails', '3.1.3'
 # Bundle edge Rails instead:
 # gem 'rails',     :git => 'git://github.com/rails/rails.git'
 
-gem 'sqlite3'
+#gem 'sqlite3'
 
 
 # Gems used only for assets and not required
@@ -38,8 +38,10 @@ gem 'yajl-ruby'
 #gem 'fog'
 gem 'fog', :git => 'git://github.com/fog/fog.git'
 
-#gem 'rack-mauth', :git => "git@github.com:mdsol/rack-mauth.git", :tag => "v0.1.2", :require => 'rack/mauth'
-#gem 'mauth_signer', :git => 'git@github.com:mdsol/mauth_signer.git', :tag => 'v0.6.3'
+
+gem 'rack-mauth', :git => "git@github.com:mdsol/rack-mauth.git", :tag => "v1.1.0", :require => 'rack/mauth'
+gem 'mauth_signer', :git => 'git@github.com:mdsol/mauth_signer.git', :tag => 'v1.0.3'
+
 #gem 'eureka-client', :git => 'git@github.com:mdsol/eureka-client.git', :ref => 'c4c98a4'
 
 group :test do
