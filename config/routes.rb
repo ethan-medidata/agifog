@@ -4,6 +4,7 @@ Agifog::Application.routes.draw do
     namespace :v1 do
       namespace :rds do
         resources :servers, :only => [:index, :show, :create, :destroy]
+        resources :parameter_groups, :only => [:index, :show]
         resources :security_groups, :only => [:index, :show, :create, :destroy] do
           member do
             put 'authorize'
