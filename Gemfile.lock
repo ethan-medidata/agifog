@@ -14,22 +14,6 @@ GIT
       ruby-hmac
 
 GIT
-  remote: git@github.com:mdsol/eureka-client.git
-  revision: c0d9274711d20d0888a521006b39c31f650aaf4b
-  ref: c0d9274
-  specs:
-    eureka-client (0.4.0)
-      addressable (>= 2.2.3)
-      autoparse (>= 0.3.0)
-      extlib (>= 0.9.15)
-      faraday (~> 0.7.0)
-      faraday_middleware (~> 0.8)
-      json-schema (~> 1.0)
-      launchy (>= 2.0.0)
-      multi_json (>= 1.0.0)
-      signet (>= 0.3.1)
-
-GIT
   remote: git@github.com:mdsol/mauth_signer.git
   revision: 4e03b8eea38157aa4500b3e73ca3b8b5a2db71b9
   ref: 4e03b8e
@@ -79,10 +63,6 @@ GEM
       multi_json (~> 1.0)
     addressable (2.2.6)
     arel (2.2.1)
-    autoparse (0.3.0)
-      addressable (~> 2.2.2)
-      extlib (>= 0.9.15)
-      json (>= 1.4.6)
     builder (3.0.0)
     capybara (1.1.2)
       mime-types (>= 1.16)
@@ -107,19 +87,12 @@ GEM
     diff-lcs (1.1.3)
     erubis (2.7.0)
     excon (0.9.5)
-    extlib (0.9.15)
     factory_girl (2.5.1)
       activesupport
     factory_girl_rails (1.6.0)
       factory_girl (~> 2.5.0)
       railties (>= 3.0.0)
     fakeweb (1.3.0)
-    faraday (0.7.6)
-      addressable (~> 2.2)
-      multipart-post (~> 1.1)
-      rack (~> 1.1)
-    faraday_middleware (0.8.4)
-      faraday (>= 0.7.4, < 0.9)
     ffi (1.0.11)
     formatador (0.2.1)
     gherkin (2.7.7)
@@ -140,12 +113,9 @@ GEM
     httpclient (2.2.4)
     i18n (0.6.0)
     json (1.6.5)
-    json-schema (1.0.1)
     json_spec (0.8.0)
       multi_json (~> 1.0)
       rspec (~> 2.0)
-    jwt (0.1.4)
-      json (>= 1.2.4)
     launchy (2.0.5)
       addressable (~> 2.2.6)
     mail (2.3.0)
@@ -154,7 +124,6 @@ GEM
       treetop (~> 1.4.8)
     mime-types (1.17.2)
     multi_json (1.0.4)
-    multipart-post (1.1.4)
     net-scp (1.0.4)
       net-ssh (>= 1.99.1)
     net-ssh (2.3.0)
@@ -213,11 +182,6 @@ GEM
       ffi (~> 1.0.9)
       multi_json (~> 1.0.4)
       rubyzip
-    signet (0.3.2)
-      addressable (~> 2.2.3)
-      faraday (~> 0.7.0)
-      jwt (>= 0.1.4)
-      multi_json (>= 1.0.0)
     spork (1.0.0rc2)
     sprockets (2.0.3)
       hike (~> 1.2)
@@ -242,7 +206,6 @@ DEPENDENCIES
   capybara
   cucumber-rails
   database_cleaner
-  eureka-client!
   factory_girl_rails
   fakeweb
   fog!

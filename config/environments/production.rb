@@ -63,17 +63,13 @@ Agifog::Application.configure do
   config.middleware.use "Medidata::MAuthMiddleware", mauth_conf[Rails.env].symbolize_keys
   
 
-  require 'eureka-client'
-  require './config/api_document'
-  eureka_conf = YAML.load(File.read(ENV['EUREKA_CONFIG_YML'] || File.join(Rails.root, 'config/eureka.yml')))
-  eureka_conf.update('mauth_config' => mauth_conf[Rails.env].symbolize_keys)
-  eureka_client = Eureka::Client.new(eureka_conf)
-  
-  eureka_client.post_apis!([AgiFog::API])
-  eureka_client.deploy!
-  
+  #require 'eureka-client'
+  #require './config/api_document'
+  #eureka_conf = YAML.load(File.read(ENV['EUREKA_CONFIG_YML'] || File.join(Rails.root, 'config/eureka.yml')))
+  #eureka_conf.update('mauth_config' => mauth_conf[Rails.env].symbolize_keys)
+  #eureka_client = Eureka::Client.new(eureka_conf)
+  #
+  #eureka_client.post_apis!([AgiFog::API])
+  #eureka_client.deploy!
 
-
-#  conf = YAML.load_file(File.join(Rails.root, "config", "rack_mauth_settings.yml"))
-#  config.middleware.use "Medidata::MAuthMiddleware", conf[:mauth_server]
 end
