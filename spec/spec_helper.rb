@@ -27,6 +27,14 @@ def rds
   @rds ||= Fog::AWS::RDS.new
 end
 
+def as
+  @as ||= Fog::AWS::AutoScaling.new
+end
+
+def compute
+  @compute ||= Fog::Compute::AWS.new
+end
+
 def rds_default_server_params
   {
     :id => "test-spec-" + uniq_id,

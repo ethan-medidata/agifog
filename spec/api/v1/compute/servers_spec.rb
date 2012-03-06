@@ -134,7 +134,4 @@ describe "/api/v1/compute/servers", :type => :api do
 end
 
 
-def compute
-  @compute ||= Fog::Compute::AWS.new
-end
 
