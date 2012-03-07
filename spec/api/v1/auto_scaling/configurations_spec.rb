@@ -16,7 +16,7 @@ describe "/api/v1/auto_scaling/configurations", :type => :api do
   describe "listing launch configurations" do
     
     before(:all) do
-      @launch_configuration = "rspec-test-configuration"
+      @launch_configuration = "first-launch-configuration"
       lc = as.configurations.create(:id => @launch_configuration, :image_id => @image_id, :instance_type => 't1.micro')
       lc = as.configurations.create(:id => 'second-launch-configuration', :image_id => @image_id, :instance_type => 't1.micro')
     end
@@ -25,12 +25,12 @@ describe "/api/v1/auto_scaling/configurations", :type => :api do
       get '/api/v1/auto_scaling/configurations'
       last_response.should be_ok
       attributes = JSON.parse(last_response.body)
-      attributes.select do |lc|
-        lc['id'].should == @launch_configuration
-        lc['image_id'].should == @image_id
-        lc['instance_type'].should == 't1.micro'
-        lc['security_groups'].should == []
-      end
+      item = attributes.find { |lc| lc['id'] == @launch_configuration }
+      item.should_not be_empty
+      item["id"].should == @launch_configuration
+      item['image_id'].should == @image_id
+      item['instance_type'].should == 't1.micro'
+      item['security_groups'].should == []
     end
     
     it "should show a launch configuration" do
