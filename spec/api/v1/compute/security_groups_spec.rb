@@ -205,9 +205,3 @@ describe "/api/v1/compute/security_groups", :type => :api do
   end
   
 end
-
-
-
-def compute
-  @compute ||= Fog::Compute::AWS.new
-end

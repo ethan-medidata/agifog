@@ -1,6 +1,6 @@
 class Api::V1::Rds::ParameterGroupsController < Api::V1::Rds::BaseController
   
-  #http://docs.amazonwebservices.com/AmazonRDS/latest/APIReference/index.html?API_CreateDBInstance.html
+  # http://docs.amazonwebservices.com/AmazonRDS/latest/APIReference/index.html?API_CreateDBInstance.html
   def index
     begin
       if @parameter_groups = rds.parameter_groups

@@ -2,6 +2,10 @@ Agifog::Application.routes.draw do
   match "/app_status" => "application#app_status"
   namespace :api do
     namespace :v1 do
+      namespace :auto_scaling do
+        resources :configurations, :only => [:index, :show, :create, :destroy]
+      end
+      
       namespace :rds do
         resources :servers, :only => [:index, :show, :create, :destroy]
         resources :parameter_groups, :only => [:index, :show]

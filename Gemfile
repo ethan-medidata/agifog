@@ -37,6 +37,7 @@ gem 'rails', '3.1.3'
 gem 'yajl-ruby'
 #gem 'fog'
 gem 'fog', :git => 'git://github.com/fog/fog.git'
+#gem 'fog',:git => "/Users/restebanez/github_forks/fog", :branch => "auto_scaling_configuration_get_bug_fixed"
 
 
 gem 'rack-mauth', :git => "git@github.com:mdsol/rack-mauth.git", :tag => "v1.1.0", :require => 'rack/mauth'
