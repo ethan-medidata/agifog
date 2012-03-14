@@ -50,6 +50,29 @@ describe "/api/v1/compute/security_groups", :type => :api do
         attributes = JSON.parse(last_response.body)
         attributes["errors"].should == ["dontexist security group not found"]
       end
+      
+      it "search a specific security group" do
+        get "/api/v1/compute/security_groups/search?contains=second"
+        last_response.should be_ok
+        attributes = JSON.parse(last_response.body)
+        item = attributes.find { |sg| sg['name'] == "rspec-agi-sg-second"}
+        item.should_not be_empty
+        item["name"].should == "rspec-agi-sg-second"
+      end
+      
+      it "search for a non-existing security group should return an empty array" do
+        get "/api/v1/compute/security_groups/search?contains=non-existing-sg"
+        last_response.should be_ok
+        attributes = JSON.parse(last_response.body)
+        attributes.should be_empty
+      end
+      
+      it "fails if contains isn't pass" do
+        get "/api/v1/compute/security_groups/search?invalid=rspec-agi-sg-second"
+        last_response.should_not be_ok
+        attributes = JSON.parse(last_response.body)
+        attributes["errors"].should == ["Invalid option, specified search?contains=sg_name"]
+      end
     end
     
     describe "creation" do

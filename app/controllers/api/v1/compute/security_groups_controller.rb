@@ -7,7 +7,7 @@ class Api::V1::Compute::SecurityGroupsController < Api::V1::Compute::BaseControl
       if @security_groups = compute.security_groups
         pretty_json_render(@security_groups)
       else
-        error = { :errors => ["There was a problem retrieving the compute servers"]}
+        error = { :errors => ["There was a problem retrieving the security groups"]}
         pretty_json_render(error, 404)
       end
     rescue => e
@@ -25,6 +25,24 @@ class Api::V1::Compute::SecurityGroupsController < Api::V1::Compute::BaseControl
       end
     rescue => e
       rescued_pretty_json_render(e,422)
+    end
+  end
+  
+  def search
+    if params[:contains]
+      begin
+        if @security_groups_matched = compute.security_groups.find_all { |sg| sg.name =~ /#{params[:contains]}/ }
+          pretty_json_render(@security_groups_matched)
+        else
+          error = { :errors => ["There was a problem retrieving the security groups"]}
+          pretty_json_render(error, 404)
+        end
+      rescue => e
+        rescued_pretty_json_render(e,422)      
+      end
+    else
+      error = { :errors => ["Invalid option, specified search?contains=sg_name"]}
+      pretty_json_render(error, 400)
     end
   end
   
@@ -204,6 +222,18 @@ class Api::V1::Compute::SecurityGroupsController < Api::V1::Compute::BaseControl
       rescued_pretty_json_render(e, 422)
     end
   end
+  
+  private
+    #def compute_security_groups_cache
+    #  # expires the cache every 2 minutes
+    #  @compute_security_groups_time_to_expire ||= Time.now + 2.minutes
+    #  
+    #  if @compute_security_groups_time_to_expire < Time.now
+    #    @compute_security_groups_time_to_expire = nil 
+    #    @compute_security_groups = compute.security_groups        
+    #  end
+    #  @compute_security_groups ||= compute.security_groups
+    #end
   
 
 end

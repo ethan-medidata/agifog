@@ -33,6 +33,7 @@ Agifog::Application.routes.draw do
           end
         end
         resources :security_groups, :only => [:index, :show, :create, :destroy] do
+          get 'search', :on => :collection # security_groups/search?contains=foo
           member do
             put 'authorize'
             put 'revoke'
