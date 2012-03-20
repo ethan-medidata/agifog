@@ -45,6 +45,9 @@ gem 'rack-mauth', :git => "git@github.com:mdsol/rack-mauth.git", :tag => "v1.1.0
 gem 'mauth_signer', :git => 'git@github.com:mdsol/mauth_signer.git', :ref => '4e03b8e'
 
 #gem 'eureka-client', :git => 'git@github.com:mdsol/eureka-client.git', :ref => 'c0d9274'
+gem 'dynect_rest'
+
+gem 'pry', :group => :development
 
 group :test do
   gem 'database_cleaner'
@@ -60,11 +63,12 @@ group :test do
   gem 'guard-cucumber'
   gem 'rb-fsevent'		# required by guard for notifications
   gem "guard-rspec"		# run rspec when a spec is saved
-  gem "launchy" 		# show the web page in case of error
+#  gem "launchy" 		# show the web page in case of error
   gem "spork", "> 0.9.0.rc" # Improve loading times during testing
   gem "guard-spork"
+  gem "vcr", "~> 2.0.0"
   gem 'fakeweb'
-  gem "vcr", "=2.0.0.beta1" #using beta2 you get: save_databag_item-databag_doesnt_exist.yml does not appear to be a valid VCR 2.0 cassette
+#  gem "webmock", "~> 1.8.0"
   gem "json_spec" # https://github.com/collectiveidea/json_spec
   gem "awesome_print"
 end

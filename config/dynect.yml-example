@@ -1,0 +1,15 @@
+defaults: &defaults
+  enabled: true
+  customer: mdsol
+  username: restebanez
+  password: FILTERED
+  zone: imedidata.net
+
+test:
+  <<: *defaults
+
+development:
+  <<: *defaults
+
+production:
+  <<: *defaults

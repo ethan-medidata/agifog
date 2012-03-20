@@ -40,6 +40,13 @@ Agifog::Application.routes.draw do
           end
         end
       end
+      namespace :dynect do
+        constraints(:id => /[^\/]+/ ) do #accepts dots in the params
+          resources :zones, :only => [:index, :show] do
+            resources :nodes, :only => [:index, :show, :create, :destroy]
+          end
+        end
+      end
       
       
     end #v1
