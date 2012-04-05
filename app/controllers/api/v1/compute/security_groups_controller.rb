@@ -32,6 +32,8 @@ class Api::V1::Compute::SecurityGroupsController < Api::V1::Compute::BaseControl
     if params[:contains]
       begin
         if @security_groups_matched = compute.security_groups.find_all { |sg| sg.name =~ /#{params[:contains]}/ }
+          @security_groups_matched.map!{|sg| sg.send(params[:field]) } if params[:field]
+            
           pretty_json_render(@security_groups_matched)
         else
           error = { :errors => ["There was a problem retrieving the security groups"]}
