@@ -44,7 +44,32 @@ class Api::V1::Rds::ServersController < Api::V1::Rds::BaseController
         pretty_json_render(error, 406) and return # 406 => :not_acceptable
       end
       
-      instance_db = rds.servers.create(rds_default_server_params.merge(new_instance_db["server"]))
+      if snapshot_id = new_instance_db["server"].delete("snapshot_id")
+        db_identifier = new_instance_db["server"].delete("id")
+        opts = {'AvailabilityZone' => new_instance_db["server"]["availability_zone"],
+                'MultiAZ' => new_instance_db["server"]["multi_az"],
+                'DBInstanceClass' => new_instance_db["server"]["flavor_id"]}
+        # there is no model for restore_db_instance_from_db_snapshot
+        instance_db = rds.restore_db_instance_from_db_snapshot(snapshot_id, db_identifier, opts)
+        # PROBLEM, i can't modify the security groups until the db instance is available, medistrano uses delay job
+        #
+        #security_group_names = new_instance_db["server"]['security_group_names']
+        #if !security_group_names.blank? and security_group_names.join != 'default'
+        #  begin
+        #    db_server = rds.servers.get(db_identifier)
+        #  rescue
+        #    raise if @searched_db_instance
+        #    @searched_db_instance = true
+        #    sleep 1
+        #    retry
+        #  end
+        #  db_server.modify(true,:security_group_names=> security_group_names) # i also tried false
+        #end
+        
+      else
+        instance_db = rds.servers.create(rds_default_server_params.merge(new_instance_db["server"]))
+      end
+      
       if instance_db
         render(:json => instance_db, :location => api_v1_rds_server_path(instance_db))
       else
