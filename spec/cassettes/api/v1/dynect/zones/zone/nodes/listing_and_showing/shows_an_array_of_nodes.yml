@@ -1,0 +1,134 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: https://api2.dynect.net/REST/Session
+    body:
+      encoding: ASCII-8BIT
+      string: ! '{"customer_name":"mdsol","user_name":"restebanez","password":"FILTERED"}'
+    headers:
+      accept:
+      - ! '*/*; q=0.5, application/xml'
+      accept-encoding:
+      - gzip, deflate
+      content-type:
+      - application/json
+      content-length:
+      - '73'
+      user-agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      server:
+      - nginx/0.7.67
+      date:
+      - Mon, 19 Mar 2012 19:34:45 GMT
+      content-type:
+      - application/json
+      transfer-encoding:
+      - chunked
+      connection:
+      - keep-alive
+    body:
+      encoding: US-ASCII
+      string: ! '{"status": "success", "data": {"token": "LZ3AF4HmAFB6yNIvIr9tluliWMEXOqYVsHF8li4TcESzoq0efw0eg02UR0Y77T3vZiRQwzDRj6MVW3c9v3B+uU1fiEAJXXJxuUA5lnzKIZBQ9gEjFWWcMnnwW3fFb7B8NEVIrO1u/El05SMvF2EGpw==",
+        "version": "3.3.2"}, "job_id": 77611043, "msgs": [{"INFO": "login: Login successful",
+        "SOURCE": "BLL", "ERR_CD": null, "LVL": "INFO"}]}'
+    http_version: '1.1'
+  recorded_at: Mon, 19 Mar 2012 19:34:46 GMT
+- request:
+    method: get
+    uri: https://api2.dynect.net/REST/NodeList/imedidata.net/
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      accept:
+      - ! '*/*; q=0.5, application/xml'
+      accept-encoding:
+      - gzip, deflate
+      content-type:
+      - application/json
+      auth-token:
+      - LZ3AF4HmAFB6yNIvIr9tluliWMEXOqYVsHF8li4TcESzoq0efw0eg02UR0Y77T3vZiRQwzDRj6MVW3c9v3B+uU1fiEAJXXJxuUA5lnzKIZBQ9gEjFWWcMnnwW3fFb7B8NEVIrO1u/El05SMvF2EGpw==
+      user-agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      server:
+      - nginx/0.7.67
+      date:
+      - Mon, 19 Mar 2012 19:34:46 GMT
+      content-type:
+      - application/json
+      transfer-encoding:
+      - chunked
+      connection:
+      - keep-alive
+    body:
+      encoding: US-ASCII
+      string: ! '{"status": "success", "data": ["imedidata.net", "aarontest-med-distro.imedidata.net",
+        "activities-sandbox.imedidata.net", "agiapp-sandbox.imedidata.net", "agifog-sandbox.imedidata.net",
+        "balance-cruise.imedidata.net", "balance-hendricks.imedidata.net", "balance-integration.imedidata.net",
+        "balance-localization.imedidata.net", "balance-performance.imedidata.net",
+        "balance-sandbox.imedidata.net", "balance-validation.imedidata.net", "budgets-sandbox.imedidata.net",
+        "butthenagainwhodoes-medidata-sandbox.imedidata.net", "checkmate-sandbox.imedidata.net",
+        "chef-status.imedidata.net", "cid.imedidata.net", "cloudcruise.imedidata.net",
+        "cloudteam-locke.imedidata.net", "coder-beta.imedidata.net", "coder-beta-cws.imedidata.net",
+        "coder-betaws.imedidata.net", "coder-distro.imedidata.net", "coder-distrows.imedidata.net",
+        "coder-performance.imedidata.net", "coder-performance-ws.imedidata.net", "coder-sandbox.imedidata.net",
+        "coder-sandbox-ws.imedidata.net", "coder-validation.imedidata.net", "coder-validationws.imedidata.net",
+        "codertesttodelete.imedidata.net", "columbo.imedidata.net", "columbo-ctms.imedidata.net",
+        "columboportal-sandbox.imedidata.net", "costanalysis-sandbox.imedidata.net",
+        "cruise.imedidata.net", "ctms.imedidata.net", "ctms-ctnet-distro.imedidata.net",
+        "ctms-ctnet-sandbox.imedidata.net", "ctms-cytori-sandbox.imedidata.net", "ctms-demo2-sandbox.imedidata.net",
+        "ctms-distro.imedidata.net", "ctms-forest-sandbox.imedidata.net", "ctms-innovate.imedidata.net",
+        "ctms-performance.imedidata.net", "ctms-sandbox.imedidata.net", "ctms-westat-sandbox.imedidata.net",
+        "ctms-zimmer-sandbox.imedidata.net", "ctms1-sandbox.imedidata.net", "dalton-sandbox.imedidata.net",
+        "demo2-ctms.imedidata.net", "designer-citrix.imedidata.net", "designer-demo.imedidata.net",
+        "designer-dev.imedidata.net", "designer-perf1.imedidata.net", "designer-sandbox.imedidata.net",
+        "dev3-ctms.imedidata.net", "dev4-ctms.imedidata.net", "dev5-ctms.imedidata.net",
+        "dev6-ctms.imedidata.net", "dev7-ctms.imedidata.net", "dev8-ctms.imedidata.net",
+        "dev9-ctms.imedidata.net", "devel-locke.imedidata.net", "devopsrave564.imedidata.net",
+        "distro.imedidata.net", "distrocf.imedidata.net", "docks-sandbox.imedidata.net",
+        "ecrf-sandbox.imedidata.net", "edc-sandbox.imedidata.net", "eureka-sandbox.imedidata.net",
+        "forecasting-sandbox.imedidata.net", "gmcontracting.imedidata.net", "gmcontracting-performance.imedidata.net",
+        "gmcontracting-sandbox.imedidata.net", "gmcontracting-validation.imedidata.net",
+        "gmplanning-sandbox.imedidata.net", "grantsmanager-demo.imedidata.net", "graylog2.imedidata.net",
+        "hendricks.imedidata.net", "balance.hendricks.imedidata.net", "huston-sandbox1.imedidata.net",
+        "iir-sandbox.imedidata.net", "imagegateway-sandbox.imedidata.net", "imedidata-cruise.imedidata.net",
+        "integration.imedidata.net", "jazzhands-sandbox.imedidata.net", "jlptest.imedidata.net",
+        "jumpbox.imedidata.net", "jumpbox-dev.imedidata.net", "library-sandbox.imedidata.net",
+        "localization.imedidata.net", "locke.imedidata.net", "login-distro.imedidata.net",
+        "login-integration.imedidata.net", "login-localization.imedidata.net", "login-performance.imedidata.net",
+        "login-sandbox.imedidata.net", "login-validation.imedidata.net", "mauth-sandbox.imedidata.net",
+        "md1.imedidata.net", "mdsgateway-sandbox.imedidata.net", "mdsol-locke.imedidata.net",
+        "mdsol-munin.imedidata.net", "mediorologist-medidata-sandbox.imedidata.net",
+        "mediorologist-sandbox.imedidata.net", "medisearch-sandbox.imedidata.net",
+        "medistrano.imedidata.net", "medistrano-sandbox.imedidata.net", "medistrano-west.imedidata.net",
+        "mfs-implservices.imedidata.net", "mfs-jenkins.imedidata.net", "mfs-performance.imedidata.net",
+        "mfs-validation.imedidata.net", "monit.imedidata.net", "munin.imedidata.net",
+        "parley-cruise.imedidata.net", "parley-sandbox.imedidata.net", "parley-testtres-app.imedidata.net",
+        "performance.imedidata.net", "prancingpony-sandbox.imedidata.net", "qpl-demo.imedidata.net",
+        "qpldemo.imedidata.net", "qpldqa.imedidata.net", "qplperf.imedidata.net",
+        "qplsqa.imedidata.net", "qplval.imedidata.net", "rave-dev-web.imedidata.net",
+        "rave-mayo-sandbox.imedidata.net", "rave-sandbox-web.imedidata.net", "rave-test.imedidata.net",
+        "rave563-distro.imedidata.net", "rave564-distro.imedidata.net", "rave564devops.imedidata.net",
+        "redirect-demo.imedidata.net", "references-sandbox.imedidata.net", "resolve.imedidata.net",
+        "resolve-distro.imedidata.net", "rodrigo.imedidata.net", "rodrigo-google.imedidata.net",
+        "rspec-agifog-a.imedidata.net", "rspec-agifog-cname.imedidata.net", "sandbox.imedidata.net",
+        "sandbox-locke.imedidata.net", "scratch-bpontes.imedidata.net", "sds-sandbox.imedidata.net",
+        "sdsruby-sandbox.imedidata.net", "soc-performance.imedidata.net", "soc-sandbox.imedidata.net",
+        "soc-validation.imedidata.net", "spotfire-sandbox.imedidata.net", "tapdancer.imedidata.net",
+        "tenuki-sandbox.imedidata.net", "trialspace.imedidata.net", "validation.imedidata.net",
+        "zimmer-trn-ctms.imedidata.net"], "job_id": 77611049, "msgs": [{"INFO": "get_tree:
+        Here is your zone tree", "SOURCE": "BLL", "ERR_CD": null, "LVL": "INFO"}]}'
+    http_version: '1.1'
+  recorded_at: Mon, 19 Mar 2012 19:34:47 GMT
+recorded_with: VCR 2.0.0

@@ -35,6 +35,19 @@ def compute
   @compute ||= Fog::Compute::AWS.new
 end
 
+dynect_conf = AppConfig['dynect']
+DYNECT_ZONE = dynect_conf['zone']
+DYNECT_ARGS = [dynect_conf['customer'], dynect_conf['username'], dynect_conf['password'], dynect_conf['zone']]
+DEFAULT_TTL = 600
+
+def dynect
+  @dynect ||= DynectRest.new(*DYNECT_ARGS)
+end
+
+def zone
+  DYNECT_ZONE
+end
+
 def rds_default_server_params
   {
     :id => "test-spec-" + uniq_id,
@@ -64,6 +77,12 @@ end
 # in spec/support/ and its subdirectories.
 Dir[Rails.root.join("spec/support/**/*.rb")].each {|f| require f}
 
+VCR.configure do |c|
+  c.cassette_library_dir = 'spec/cassettes'
+  c.hook_into :fakeweb
+  c.configure_rspec_metadata!
+end
+
 RSpec.configure do |config|
   # == Mock Framework
   #
@@ -89,4 +108,5 @@ RSpec.configure do |config|
   config.fail_fast = true
   
   config.include JsonSpec::Helpers # https://github.com/collectiveidea/json_spec
+  config.treat_symbols_as_metadata_keys_with_true_values = true
 end

@@ -1,0 +1,168 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: https://api2.dynect.net/REST/Session
+    body:
+      encoding: ASCII-8BIT
+      string: ! '{"customer_name":"mdsol","user_name":"restebanez","password":"FILTERED"}'
+    headers:
+      accept:
+      - ! '*/*; q=0.5, application/xml'
+      accept-encoding:
+      - gzip, deflate
+      content-type:
+      - application/json
+      content-length:
+      - '73'
+      user-agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      server:
+      - nginx/0.7.67
+      date:
+      - Mon, 19 Mar 2012 16:20:06 GMT
+      content-type:
+      - application/json
+      transfer-encoding:
+      - chunked
+      connection:
+      - keep-alive
+    body:
+      encoding: US-ASCII
+      string: ! '{"status": "success", "data": {"token": "v7LmPuZM8B/XNLHHTqDDWu2E30hEAb1DZGoO0gAQXR0RsJrNI4T6XWC1Vq3WJVbZCyx5cPX6ex9ey9IOSWdUt5wKA6ySVi+rvgcWFGdRLvWRAuMondCbLsw23s16pPDFocZcdiBX6qj2NFH2aE2X6A==",
+        "version": "3.3.2"}, "job_id": 77557635, "msgs": [{"INFO": "login: Login successful",
+        "SOURCE": "BLL", "ERR_CD": null, "LVL": "INFO"}]}'
+    http_version: '1.1'
+  recorded_at: Mon, 19 Mar 2012 16:20:06 GMT
+- request:
+    method: post
+    uri: https://api2.dynect.net/REST/ARecord/imedidata.net/rspec-agifog-a.imedidata.net
+    body:
+      encoding: ASCII-8BIT
+      string: ! '{"rdata":{"address":"192.168.1.1"},"ttl":600}'
+    headers:
+      accept:
+      - ! '*/*; q=0.5, application/xml'
+      accept-encoding:
+      - gzip, deflate
+      content-type:
+      - application/json
+      auth-token:
+      - v7LmPuZM8B/XNLHHTqDDWu2E30hEAb1DZGoO0gAQXR0RsJrNI4T6XWC1Vq3WJVbZCyx5cPX6ex9ey9IOSWdUt5wKA6ySVi+rvgcWFGdRLvWRAuMondCbLsw23s16pPDFocZcdiBX6qj2NFH2aE2X6A==
+      content-length:
+      - '45'
+      user-agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      server:
+      - nginx/0.7.67
+      date:
+      - Mon, 19 Mar 2012 16:20:08 GMT
+      content-type:
+      - application/json
+      transfer-encoding:
+      - chunked
+      connection:
+      - keep-alive
+    body:
+      encoding: US-ASCII
+      string: ! '{"status": "success", "data": {"zone": "imedidata.net", "ttl": 600,
+        "fqdn": "rspec-agifog-a.imedidata.net", "record_type": "A", "rdata": {"address":
+        "192.168.1.1"}, "record_id": 0}, "job_id": 77557657, "msgs": [{"INFO": "add:
+        Record added", "SOURCE": "BLL", "ERR_CD": null, "LVL": "INFO"}]}'
+    http_version: '1.1'
+  recorded_at: Mon, 19 Mar 2012 16:20:08 GMT
+- request:
+    method: post
+    uri: https://api2.dynect.net/REST/CNAMERecord/imedidata.net/rspec-agifog-cname.imedidata.net
+    body:
+      encoding: ASCII-8BIT
+      string: ! '{"rdata":{"cname":"www.google.com"},"ttl":null}'
+    headers:
+      accept:
+      - ! '*/*; q=0.5, application/xml'
+      accept-encoding:
+      - gzip, deflate
+      content-type:
+      - application/json
+      auth-token:
+      - v7LmPuZM8B/XNLHHTqDDWu2E30hEAb1DZGoO0gAQXR0RsJrNI4T6XWC1Vq3WJVbZCyx5cPX6ex9ey9IOSWdUt5wKA6ySVi+rvgcWFGdRLvWRAuMondCbLsw23s16pPDFocZcdiBX6qj2NFH2aE2X6A==
+      content-length:
+      - '47'
+      user-agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      server:
+      - nginx/0.7.67
+      date:
+      - Mon, 19 Mar 2012 16:20:09 GMT
+      content-type:
+      - application/json
+      transfer-encoding:
+      - chunked
+      connection:
+      - keep-alive
+    body:
+      encoding: US-ASCII
+      string: ! '{"status": "success", "data": {"zone": "imedidata.net", "ttl": 600,
+        "fqdn": "rspec-agifog-cname.imedidata.net", "record_type": "CNAME", "rdata":
+        {"cname": "www.google.com."}, "record_id": 0}, "job_id": 77557673, "msgs":
+        [{"INFO": "add: Record added", "SOURCE": "BLL", "ERR_CD": null, "LVL": "INFO"}]}'
+    http_version: '1.1'
+  recorded_at: Mon, 19 Mar 2012 16:20:09 GMT
+- request:
+    method: put
+    uri: https://api2.dynect.net/REST/Zone/imedidata.net
+    body:
+      encoding: ASCII-8BIT
+      string: ! '{"publish":true}'
+    headers:
+      accept:
+      - ! '*/*; q=0.5, application/xml'
+      accept-encoding:
+      - gzip, deflate
+      content-type:
+      - application/json
+      auth-token:
+      - v7LmPuZM8B/XNLHHTqDDWu2E30hEAb1DZGoO0gAQXR0RsJrNI4T6XWC1Vq3WJVbZCyx5cPX6ex9ey9IOSWdUt5wKA6ySVi+rvgcWFGdRLvWRAuMondCbLsw23s16pPDFocZcdiBX6qj2NFH2aE2X6A==
+      content-length:
+      - '16'
+      user-agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      server:
+      - nginx/0.7.67
+      date:
+      - Mon, 19 Mar 2012 16:20:11 GMT
+      content-type:
+      - application/json
+      transfer-encoding:
+      - chunked
+      connection:
+      - keep-alive
+    body:
+      encoding: US-ASCII
+      string: ! '{"status": "success", "data": {"zone_type": "Primary", "serial_style":
+        "day", "serial": 2012031900, "zone": "imedidata.net"}, "job_id": 77557687,
+        "msgs": [{"INFO": "publish: imedidata.net published", "SOURCE": "BLL", "ERR_CD":
+        null, "LVL": "INFO"}]}'
+    http_version: '1.1'
+  recorded_at: Mon, 19 Mar 2012 16:20:11 GMT
+recorded_with: VCR 2.0.0

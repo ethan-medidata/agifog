@@ -1,0 +1,124 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: https://api2.dynect.net/REST/Session
+    body:
+      encoding: ASCII-8BIT
+      string: ! '{"customer_name":"mdsol","user_name":"restebanez","password":"FILTERED"}'
+    headers:
+      accept:
+      - ! '*/*; q=0.5, application/xml'
+      accept-encoding:
+      - gzip, deflate
+      content-type:
+      - application/json
+      content-length:
+      - '73'
+      user-agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      server:
+      - nginx/0.7.67
+      date:
+      - Tue, 20 Mar 2012 14:19:53 GMT
+      content-type:
+      - application/json
+      transfer-encoding:
+      - chunked
+      connection:
+      - keep-alive
+    body:
+      encoding: US-ASCII
+      string: ! '{"status": "success", "data": {"token": "8sN6LIxWtyRow0kJBBWgubyqDqi+/SZWre3mfYweLm05TcFOzWxTHPplK077M/1Dlb39lGwm7WHXZ4n0t22NvcqnXO1+MNHEld/W1VlKBKRDEu/JpAhe2B/pE5NQNzAMWTVqPXnCwWBw22Bz4+84lg==",
+        "version": "3.3.2"}, "job_id": 77877729, "msgs": [{"INFO": "login: Login successful",
+        "SOURCE": "BLL", "ERR_CD": null, "LVL": "INFO"}]}'
+    http_version: '1.1'
+  recorded_at: Tue, 20 Mar 2012 14:19:52 GMT
+- request:
+    method: delete
+    uri: https://api2.dynect.net/REST/Node/imedidata.net/rspec-create.imedidata.net
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      accept:
+      - ! '*/*; q=0.5, application/xml'
+      accept-encoding:
+      - gzip, deflate
+      content-type:
+      - application/json
+      auth-token:
+      - 8sN6LIxWtyRow0kJBBWgubyqDqi+/SZWre3mfYweLm05TcFOzWxTHPplK077M/1Dlb39lGwm7WHXZ4n0t22NvcqnXO1+MNHEld/W1VlKBKRDEu/JpAhe2B/pE5NQNzAMWTVqPXnCwWBw22Bz4+84lg==
+      user-agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      server:
+      - nginx/0.7.67
+      date:
+      - Tue, 20 Mar 2012 14:19:54 GMT
+      content-type:
+      - application/json
+      transfer-encoding:
+      - chunked
+      connection:
+      - keep-alive
+    body:
+      encoding: US-ASCII
+      string: ! '{"status": "success", "data": {"zone_type": "Primary", "serial_style":
+        "day", "serial": 2012032002, "zone": "imedidata.net"}, "job_id": 77877732,
+        "msgs": [{"INFO": "remove_node: rspec-create.imedidata.net removed from tree.
+        All records also removed.", "SOURCE": "BLL", "ERR_CD": null, "LVL": "INFO"}]}'
+    http_version: '1.1'
+  recorded_at: Tue, 20 Mar 2012 14:19:53 GMT
+- request:
+    method: put
+    uri: https://api2.dynect.net/REST/Zone/imedidata.net
+    body:
+      encoding: ASCII-8BIT
+      string: ! '{"publish":true}'
+    headers:
+      accept:
+      - ! '*/*; q=0.5, application/xml'
+      accept-encoding:
+      - gzip, deflate
+      content-type:
+      - application/json
+      auth-token:
+      - 8sN6LIxWtyRow0kJBBWgubyqDqi+/SZWre3mfYweLm05TcFOzWxTHPplK077M/1Dlb39lGwm7WHXZ4n0t22NvcqnXO1+MNHEld/W1VlKBKRDEu/JpAhe2B/pE5NQNzAMWTVqPXnCwWBw22Bz4+84lg==
+      content-length:
+      - '16'
+      user-agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      server:
+      - nginx/0.7.67
+      date:
+      - Tue, 20 Mar 2012 14:19:55 GMT
+      content-type:
+      - application/json
+      transfer-encoding:
+      - chunked
+      connection:
+      - keep-alive
+    body:
+      encoding: US-ASCII
+      string: ! '{"status": "success", "data": {"zone_type": "Primary", "serial_style":
+        "day", "serial": 2012032003, "zone": "imedidata.net"}, "job_id": 77877744,
+        "msgs": [{"INFO": "publish: imedidata.net published", "SOURCE": "BLL", "ERR_CD":
+        null, "LVL": "INFO"}]}'
+    http_version: '1.1'
+  recorded_at: Tue, 20 Mar 2012 14:19:54 GMT
+recorded_with: VCR 2.0.0

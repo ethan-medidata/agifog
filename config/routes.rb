@@ -7,7 +7,7 @@ Agifog::Application.routes.draw do
       end
       
       namespace :rds do
-        resources :servers, :only => [:index, :show, :create, :destroy]
+        resources :servers, :only => [:index, :show, :create, :destroy, :update]
         resources :parameter_groups, :only => [:index, :show]
         resources :security_groups, :only => [:index, :show, :create, :destroy] do
           member do
@@ -37,6 +37,13 @@ Agifog::Application.routes.draw do
           member do
             put 'authorize'
             put 'revoke'
+          end
+        end
+      end
+      namespace :dynect do
+        constraints(:id => /[^\/]+/ ) do #accepts dots in the params
+          resources :zones, :only => [:index, :show] do
+            resources :nodes, :only => [:index, :show, :create, :destroy]
           end
         end
       end

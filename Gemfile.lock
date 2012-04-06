@@ -61,7 +61,6 @@ GEM
       activesupport (= 3.1.3)
     activesupport (3.1.3)
       multi_json (~> 1.0)
-    addressable (2.2.6)
     arel (2.2.1)
     awesome_print (1.0.2)
     builder (3.0.0)
@@ -74,6 +73,7 @@ GEM
       xpath (~> 0.1.4)
     childprocess (0.3.1)
       ffi (~> 1.0.6)
+    coderay (1.0.5)
     cucumber (1.1.4)
       builder (>= 2.1.2)
       diff-lcs (>= 1.1.2)
@@ -86,6 +86,11 @@ GEM
       nokogiri (>= 1.5.0)
     database_cleaner (0.7.1)
     diff-lcs (1.1.3)
+    dynect_rest (0.4.0)
+      json
+      json
+      rest-client
+      rest-client
     erubis (2.7.0)
     excon (0.9.6)
     factory_girl (2.5.1)
@@ -117,12 +122,11 @@ GEM
     json_spec (0.8.0)
       multi_json (~> 1.0)
       rspec (~> 2.0)
-    launchy (2.0.5)
-      addressable (~> 2.2.6)
     mail (2.3.0)
       i18n (>= 0.4.0)
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
+    method_source (0.7.1)
     mime-types (1.17.2)
     multi_json (1.0.4)
     net-scp (1.0.4)
@@ -133,6 +137,10 @@ GEM
       cucumber (>= 0.8)
       rake
     polyglot (0.3.3)
+    pry (0.9.8.4)
+      coderay (~> 1.0.5)
+      method_source (~> 0.7.1)
+      slop (>= 2.4.4, < 3)
     rack (1.3.6)
     rack-cache (1.1)
       rack (>= 0.4)
@@ -163,6 +171,8 @@ GEM
     rb-fsevent (0.9.0)
     rdoc (3.12)
       json (~> 1.4)
+    rest-client (1.6.7)
+      mime-types (>= 1.16)
     rspec (2.8.0)
       rspec-core (~> 2.8.0)
       rspec-expectations (~> 2.8.0)
@@ -183,6 +193,7 @@ GEM
       ffi (~> 1.0.9)
       multi_json (~> 1.0.4)
       rubyzip
+    slop (2.4.4)
     spork (1.0.0rc2)
     sprockets (2.0.3)
       hike (~> 1.2)
@@ -195,7 +206,7 @@ GEM
       polyglot
       polyglot (>= 0.3.1)
     tzinfo (0.3.31)
-    vcr (2.0.0.beta1)
+    vcr (2.0.0)
     xpath (0.1.4)
       nokogiri (~> 1.3)
     yajl-ruby (1.1.0)
@@ -208,6 +219,7 @@ DEPENDENCIES
   capybara
   cucumber-rails
   database_cleaner
+  dynect_rest
   factory_girl_rails
   fakeweb
   fog!
@@ -217,14 +229,14 @@ DEPENDENCIES
   guard-rspec
   guard-spork
   json_spec
-  launchy
   mauth_signer!
   pickle
+  pry
   rack-mauth!
   rails (= 3.1.3)
   rails3-generators
   rb-fsevent
   rspec-rails
   spork (> 0.9.0.rc)
-  vcr (= 2.0.0.beta1)
+  vcr (~> 2.0.0)
   yajl-ruby
