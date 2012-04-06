@@ -118,9 +118,10 @@ class Api::V1::Rds::ServersController < Api::V1::Rds::BaseController
       end
       
        if @server = rds.servers.get(params[:id])
-         modify_options = JSON.parse(request.body.read)
-         if @server.modify(false, modify_options)
-           render(:json => ["#{params[:id]} was updated successfully"])
+         security_group_names = modify_options["server"]['security_group_names']
+         if @server.modify(true,:security_group_names=> security_group_names)
+           #render(:json => ["#{params[:id]} was updated successfully"])
+           render(:json => modify_options) #this is what update_attributes expects
          else
            error = { :errors => ["#{params[:id]} wasn't updated"]}
            pretty_json_render(error, 400)

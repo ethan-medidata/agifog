@@ -7,7 +7,7 @@ Agifog::Application.routes.draw do
       end
       
       namespace :rds do
-        resources :servers, :only => [:index, :show, :create, :destroy]
+        resources :servers, :only => [:index, :show, :create, :destroy, :update]
         resources :parameter_groups, :only => [:index, :show]
         resources :security_groups, :only => [:index, :show, :create, :destroy] do
           member do
