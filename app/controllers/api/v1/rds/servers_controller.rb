@@ -116,12 +116,23 @@ class Api::V1::Rds::ServersController < Api::V1::Rds::BaseController
         error =  { :errors => ["The request failed because its format is not valid; it could not be parsed"] }
         pretty_json_render(error, 406) and return
       end
-      
        if @server = rds.servers.get(params[:id])
-         security_group_names = modify_options["server"]['security_group_names']
-         if @server.modify(true,:security_group_names=> security_group_names)
-           #render(:json => ["#{params[:id]} was updated successfully"])
-           render(:json => modify_options) #this is what update_attributes expects
+         server = modify_options["server"]
+         # this are the attributes that can be modify: 
+         # http://docs.amazonwebservices.com/AmazonRDS/latest/APIReference/API_ModifyDBInstance.html
+         attributes_to_modify = {
+            :security_group_names => server['security_group_names'],
+            :allocated_storage => server['allocated_storage'],
+            :flavor_id => server['flavor_id'],
+#            :id => server['id'],
+#            :engine_version => server['engine_version'],
+#            :parameter_group_name => server['parameter_group_name'],
+            :password => server['password'],
+            :multi_az => server['multi_az']
+            }.reject{|k,v| v.blank? }
+                      
+         if @server.modify(true,attributes_to_modify)
+           render(:json => @server) #this is what update_attributes expects
          else
            error = { :errors => ["#{params[:id]} wasn't updated"]}
            pretty_json_render(error, 400)

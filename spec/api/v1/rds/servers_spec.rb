@@ -145,7 +145,6 @@ describe "/api/v1/rds/servers", :type => :api do
           :password => "testspec01",
           :allocated_storage => 5, 
           :engine => 'mysql',
-          :flavor_id => "db.m1.small",
           :security_group_names => [@ec2_sec_group.name] }
         }.to_json
       last_response.status == 201
