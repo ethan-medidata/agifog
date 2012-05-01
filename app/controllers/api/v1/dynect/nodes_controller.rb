@@ -19,7 +19,8 @@ class Api::V1::Dynect::NodesController < Api::V1::Dynect::BaseController
   def index
     begin
       nodes = dynect.get("NodeList/#{params[:zone_id]}/")
-      pretty_json_render(nodes)
+      active_resource_format = nodes.map{|node| {'id' => node}} #active resource expects an array of hashes
+      pretty_json_render(active_resource_format)
     rescue => e
       if e.message =~ /NOT_FOUND/
         error = { :errors => ["#{params[:id]} zone not found"] }
@@ -72,9 +73,11 @@ class Api::V1::Dynect::NodesController < Api::V1::Dynect::BaseController
   
   def show
     begin
-      records_url = dynect.get("AllRecord/#{params[:zone_id]}/#{params[:id]}")
+      records_url = dynect.get("AllRecord/#{params[:zone_id]}/#{params[:id].sub(/.json$/,'')}")
       records = records_url.map {|r_url| dynect.get("#{r_url.sub(/^\/REST\//, '')}") }
-      pretty_json_render(records)
+      #raise "there should be only a single record" unless records.size == 1 # active resource only allows one record
+      record = records.first
+      pretty_json_render(record.merge("id"=>record['fqdn']))
     rescue => e
       if e.message =~ /NOT_FOUND/
         error = { :errors => ["#{params[:id]} zone not found"] }
@@ -93,7 +96,7 @@ class Api::V1::Dynect::NodesController < Api::V1::Dynect::BaseController
   #     "ttl": 600,
   #     "fqdn": "rodrigo.imedidata.net",
   #     "record_type": "A",
-  #     "rdata": { "address": "192.168.1.1" }
+  #     "rdata": "192.168.1.1"
   #    }
   # }
   def create
@@ -103,15 +106,15 @@ class Api::V1::Dynect::NodesController < Api::V1::Dynect::BaseController
       
       case node["record_type"]
       when "A", "a"
-        dynect.a.fqdn(node["fqdn"]).ttl(node["ttl"]).address(node["rdata"]["address"]).save
+        dynect.a.fqdn(node["fqdn"]).ttl(node["ttl"]).address(node["rdata"]).save
       when "CNAME", "cname"
-        dynect.cname.fqdn(node["fqdn"]).ttl(node["ttl"]).cname(node["rdata"]["cname"]).save
+        dynect.cname.fqdn(node["fqdn"]).ttl(node["ttl"]).cname(node["rdata"]).save
       else
         error = { :errors => ["record_type has to be either A or CNAME"] }
         pretty_json_render(error, 400)
       end
       dynect.publish
-      pretty_json_render("OK",201)
+      pretty_json_render(node,201)
     rescue => e
       rescued_pretty_json_render(e,422)
     end
@@ -120,7 +123,7 @@ class Api::V1::Dynect::NodesController < Api::V1::Dynect::BaseController
   # https://manage.dynect.net/help/docs/api2/rest/resources/Node.html
   def destroy
     begin
-      dynect.delete("Node/#{params[:zone_id]}/#{params[:id]}")
+      dynect.delete("Node/#{params[:zone_id]}/#{params[:id].sub(/.json$/,'')}")
       dynect.publish
       pretty_json_render(["#{params[:id]} was deleted successfully"])
     rescue => e
