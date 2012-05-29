@@ -1,8 +1,8 @@
 defaults: &defaults
   enabled: true
   customer: mdsol
-  username: restebanez
-  password: FILTERED
+  username: xxxxxxxxxx
+  password: xxxxxxxxx
   zone: imedidata.net
 
 test:
