@@ -6,7 +6,7 @@ Requirements:
 
 * RVM with ruby-1.9.2-p290 (you can install it using: rvm install ruby-1.9.2-p290)
 * A set of Dynect credentials for performing DNS operations
-* A set of AWS credentials (we use aws-green for sandbox )
+* A set of AWS credentials (we use aws-blue for scratching/testing  )
 
 1) Fetch the code and bundle up:
 
