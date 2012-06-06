@@ -153,11 +153,11 @@ describe "/api/v1/rds/servers", :type => :api do
       attributes["flavor_id"].should == "db.m1.small"
       attributes["allocated_storage"].should == 5
       # default values when non specifiy
-      pending "fog mocking doesn't support passing security_group_names" do
-        attributes["db_security_groups"][0]["DBSecurityGroupName"].should == @ec2_sec_group.name
-        attributes["multi_az"].should == false
-        attributes["state"].should == "creating"
-      end
+      #pending "fog mocking doesn't support passing security_group_names" do
+      #  attributes["db_security_groups"][0]["DBSecurityGroupName"].should == @ec2_sec_group.name
+      #  attributes["multi_az"].should == false
+      #  attributes["state"].should == "creating"
+      #end
     end
   end
   
