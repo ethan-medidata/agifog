@@ -36,8 +36,9 @@ gem 'rails', '3.1.3'
 
 gem 'yajl-ruby'
 #gem 'fog'
-gem 'fog', :git => 'git://github.com/fog/fog.git'
-#gem 'fog',:git => "/Users/restebanez/github_forks/fog", :branch => "auto_scaling_configuration_get_bug_fixed"
+#gem 'fog', :git => 'git://github.com/fog/fog.git'
+#gem 'fog',:git => "/Users/restebanez/github_forks/fog", :branch => "feature/iam-improvement"
+gem 'fog',:git => "git://github.com/restebanez/fog.git", :branch => "feature/iam-improvement"
 
 
 gem 'rack-mauth', :git => "git@github.com:mdsol/rack-mauth.git", :tag => "v1.1.0", :require => 'rack/mauth'
@@ -54,7 +55,7 @@ group :test do
   gem 'rails3-generators' #mainly for factory_girl & simple_form at this point
   gem 'rspec-rails'
   gem 'factory_girl_rails'	# mocking
-  gem 'cucumber-rails'
+  gem 'cucumber-rails', require: false # https://github.com/cucumber/cucumber/issues/249
   gem "pickle"			# gives you a lot of already defined cucumber steps
   gem 'capybara'
   gem 'guard' 

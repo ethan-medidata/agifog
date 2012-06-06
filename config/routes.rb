@@ -48,6 +48,10 @@ Agifog::Application.routes.draw do
         end
       end
       
+      namespace :iam do
+        resources :users, :only => [:index, :show, :create, :destroy]
+      end
+      
       
     end #v1
   end #api

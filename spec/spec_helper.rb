@@ -35,6 +35,10 @@ def compute
   @compute ||= Fog::Compute::AWS.new
 end
 
+def iam
+  @iam ||= Fog::AWS::IAM.new
+end
+
 dynect_conf = AppConfig['dynect']
 DYNECT_ZONE = dynect_conf['zone']
 DYNECT_ARGS = [dynect_conf['customer'], dynect_conf['username'], dynect_conf['password'], dynect_conf['zone']]
