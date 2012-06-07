@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/restebanez/fog.git
-  revision: 6aa7efb56f9b47e480cb088f0090ed82f85fb7c7
+  revision: 3a175f177f9739431a566b11f5bd878e8121d1ce
   branch: feature/iam-improvement
   specs:
     fog (1.3.1)
