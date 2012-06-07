@@ -29,9 +29,9 @@ describe "/api/v1/iam/users", :type => :api do
         last_response.should be_ok
         instance = JSON.parse(last_response.body).find { |user|  user['id'] == @user.id }
         instance.should_not be_empty
-        instance['path'] == @user.path
-        instance['arn'] == @user.arn
-        instance['user_id'] == @user.user_id
+        instance['path'].should == @user.path
+        instance['arn'].should == @user.arn
+        instance['user_id'].should == @user.user_id
       end
     end
     
@@ -41,9 +41,9 @@ describe "/api/v1/iam/users", :type => :api do
         last_response.should be_ok
         instance = JSON.parse(last_response.body)
         instance.should_not be_empty
-        instance['path'] == @user.path
-        instance['arn'] == @user.arn
-        instance['user_id'] == @user.user_id
+        instance['path'].should == @user.path
+        instance['arn'].should == @user.arn
+        instance['user_id'].should == @user.user_id
       end
       
       it "returns 404 for a non-existing user" do

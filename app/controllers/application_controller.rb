@@ -26,7 +26,6 @@ class ApplicationController < ActionController::Base
 
   def rescued_pretty_json_render(rescued_message,status=422)
     if match = rescued_message.message.match(/<Code>(.*)<\/Code>[\s\\\w]+<Message>(.*)<\/Message>/m)
-      puts "#{match[1].split('.').last} => #{match[2]}"
       error =  { :errors => ["#{match[1].split('.').last} => #{match[2]}"] }
     else
       error =  { :errors => [rescued_message.message] }
@@ -36,6 +35,23 @@ class ApplicationController < ActionController::Base
   
   def app_status
     pretty_json_render('ok',200)
+  end
+  
+  def response_with_proper_error(&block)
+    begin
+      yield
+    rescue Fog::AWS::IAM::EntityAlreadyExists => e
+      rescued_pretty_json_render(e, 409)
+    rescue Api::Errors::BadRequest => e
+      rescued_pretty_json_render(e, 400)
+    rescue Api::Errors::NotFound => e
+      rescued_pretty_json_render(e, 404)
+    rescue Api::Errors::MethodFailure => e
+      rescued_pretty_json_render(e, 424)
+    rescue => e
+      rescued_pretty_json_render(e, 422)
+    end
+    
   end
   
   protected
