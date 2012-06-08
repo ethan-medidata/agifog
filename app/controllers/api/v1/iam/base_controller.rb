@@ -7,7 +7,9 @@ class Api::V1::Iam::BaseController < ApplicationController
    
    
    def load_user
-     @user = iam.users.get(params[:user_id])
+     response_with_proper_error do
+       @user = iam.users.get(params[:user_id]) or raise Api::Errors::NotFound.new("#{params[:user_id]} iam user not found")
+     end
    end
    
 end
