@@ -21,7 +21,7 @@ describe "/api/v1/dynect/zones/zone/nodes", :vcr, :type => :api do
       last_response.should be_ok
       nodes = JSON.parse(last_response.body)
       nodes.should_not be_empty
-      node = nodes.find { |n| n == @cname_fqdn }
+      node = nodes.find { |n| n['id'] == @cname_fqdn }
       node.should_not be_empty
     end
     
@@ -29,12 +29,12 @@ describe "/api/v1/dynect/zones/zone/nodes", :vcr, :type => :api do
       get "/api/v1/dynect/zones/#{zone}/nodes/#{@a_fqdn}"
       last_response.should be_ok
       node = JSON.parse(last_response.body)
-      record = node.find { |n| n['fqdn'] == @a_fqdn }
-      record.should_not be_empty
-      record["zone"].should == zone
-      record["ttl"].should == @ttl
-      record["record_type"].should == 'A'
-      record["rdata"]["address"].should == @a_address
+      node.should_not be_empty
+      node["fqdn"].should == @a_fqdn
+      node["zone"].should == zone
+      node["ttl"].should == @ttl
+      node["record_type"].should == 'A'
+      node["rdata"]["address"].should == @a_address
     end
   end
   
@@ -54,7 +54,7 @@ describe "/api/v1/dynect/zones/zone/nodes", :vcr, :type => :api do
         }.to_json
       last_response.status == 201
       response = JSON.parse(last_response.body)
-      response.should == "OK"
+      response['fqdn'].should == @new_node_fqdn
     end
     
     it "deletes a node" do

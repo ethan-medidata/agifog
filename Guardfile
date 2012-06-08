@@ -3,7 +3,8 @@
 
 # --drb is to use spork
 #guard 'rspec', :version => 2, :cli => "--drb", :all_on_start => false, :all_after_pass => false do
-guard 'rspec', :version => 2, :all_on_start => false, :all_after_pass => false do
+#guard 'rspec', :version => 2, :cli => "--format documentation", :all_on_start => false, :all_after_pass => false do
+guard 'rspec', :version => 2, :cli => "--format documentation", :all_on_start => false, :all_after_pass => true do
 
 
   # Rails example

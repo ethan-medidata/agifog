@@ -1,5 +1,4 @@
 class Api::V1::Dynect::BaseController < ApplicationController
-  skip_before_filter :verify_authenticity_token
   
   dynect_conf = AppConfig['dynect']
   DYNECT_ZONE = dynect_conf['zone']
