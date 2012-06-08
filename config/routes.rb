@@ -49,7 +49,10 @@ Agifog::Application.routes.draw do
       end
       
       namespace :iam do
-        resources :users, :only => [:index, :show, :create, :destroy]
+        resources :users, :only => [:index, :show, :create, :destroy] do
+          resources :policies, :only => [:index, :show, :create, :destroy]
+          resources :access_keys, :only => [:index, :show, :create, :destroy]
+        end
       end
       
       
