@@ -42,6 +42,7 @@ gem 'fog',:git => "git://github.com/restebanez/fog.git", :branch => "feature/iam
 
 
 gem 'mauth-client', :git => 'git@github.com:mdsol/mauth-client.git', :tag => 'v2.2.0'
+gem 'eureka-client', :git => 'git@github.com:mdsol/eureka-client.git', :branch => 'eureka-client-dev-0.0.4'
 gem 'dynect_rest'
 
 gem 'pry', :group => :development
