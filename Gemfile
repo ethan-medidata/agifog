@@ -41,11 +41,7 @@ gem 'yajl-ruby'
 gem 'fog',:git => "git://github.com/restebanez/fog.git", :branch => "feature/iam-improvement"
 
 
-gem 'rack-mauth', :git => "git@github.com:mdsol/rack-mauth.git", :tag => "v1.1.0", :require => 'rack/mauth'
-#gem 'mauth_signer', :git => 'git@github.com:mdsol/mauth_signer.git', :tag => 'v1.0.3'
-gem 'mauth_signer', :git => 'git@github.com:mdsol/mauth_signer.git', :ref => '4e03b8e'
-
-#gem 'eureka-client', :git => 'git@github.com:mdsol/eureka-client.git', :ref => 'c0d9274'
+gem 'mauth-client', :git => 'git@github.com:mdsol/mauth-client.git', :tag => 'v2.2.0'
 gem 'dynect_rest'
 
 gem 'pry', :group => :development

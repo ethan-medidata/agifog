@@ -50,5 +50,10 @@ module Agifog
     # Version of your assets, change this if you want to expire all your assets
     config.assets.version = '1.0'
     
+    mauth_config = YAML.load_file(File.join(Rails.root, "config/mauth.yml"))[Rails.env]
+    require 'mauth/rack'
+    config.middleware.use MAuth::Rack::ResponseSigner, mauth_config
+    # authenticate all requests except /app_status with MAuth
+    config.middleware.use MAuth::Rack::RequestAuthenticatorNoAppStatus, mauth_config
   end
 end

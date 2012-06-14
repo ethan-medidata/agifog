@@ -27,14 +27,4 @@ Agifog::Application.configure do
 
   # Expands the lines which load the assets
   config.assets.debug = true
-  
-#  conf = YAML.load_file(File.join(Rails.root, "config", "rack_mauth_settings.yml"))
-#  config.middleware.use "Medidata::MAuthMiddleware", conf[:mauth_server]
-#  require 'eureka-client'
-#  require './config/api_document'
-#  config = YAML.load(File.read(ENV['EUREKA_CONFIG_YML'] || File.join(Rails.root, 'config/eureka.yml')))
-#  eureka_client = Eureka::Client.new(config)
-#
-#  eureka_client.post_apis!([AgiFog::API])
-#  eureka_client.deploy!
 end
