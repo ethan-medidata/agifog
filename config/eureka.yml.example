@@ -1,0 +1,15 @@
+common: &common
+  eureka: &common_eureka
+    baseURI: https://eureka-innovate.imedidata.com
+  deployment:
+    baseURI: http://agifog.localhost:3001
+  stage: agifog-local
+
+development:
+  <<: *common
+  eureka:
+    <<: *common_eureka
+test:
+  <<: *common
+  eureka:
+    <<: *common_eureka
