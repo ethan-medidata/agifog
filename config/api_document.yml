@@ -1,6 +1,5 @@
-id: agifog:v1
 name: agifog
-version: v1
+version: v1.0.0
 title: agi fog
 description: Service to talk to aws
 documentationLink: https://github.com/restebanez/agifog
@@ -10,25 +9,22 @@ resources:
   rds_servers: 
     methods: 
       list: 
-        id: agifog.rds_server.list
+        id: agifog.rds_servers.list
         path: rds/servers
         httpMethod: GET
         description: Gets every rds server
         parameters: {}
 
       show: 
-        id: agifog.rds_server.show
+        id: agifog.rds_servers.show
         path: rds/servers/{id}
         httpMethod: GET
         description: Gets a rds server
         parameters: 
           id: 
-            type: string
             description: rds server id
-            required: true
-            location: path
       create: 
-        id: agifog.rds_server.create
+        id: agifog.rds_servers.create
         path: rds/servers
         httpMethod: POST
         description: Create a new rds server
@@ -50,10 +46,7 @@ resources:
         description: Gets a security group server
         parameters: 
           id: 
-            type: string
             description: rds security group id
-            required: true
-            location: path
       authorize: 
         id: agifog.rds_security_groups.authorize
         path: rds/security_groups/{id}/authorize
@@ -61,7 +54,4 @@ resources:
         description: Authorize a security group server
         parameters: 
           id: 
-            type: string
             description: rds authorize a security group id
-            required: true
-            location: path
