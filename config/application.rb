@@ -51,9 +51,19 @@ module Agifog
     config.assets.version = '1.0'
     
     mauth_config = YAML.load_file(File.join(Rails.root, "config/mauth.yml"))[Rails.env]
+    mauth_config['logger'] = Rails.logger
     require 'mauth/rack'
     config.middleware.use MAuth::Rack::ResponseSigner, mauth_config
     # authenticate all requests except /app_status with MAuth
     config.middleware.use MAuth::Rack::RequestAuthenticatorNoAppStatus, mauth_config
+
+    require 'eureka-client'
+    eureka_config = YAML.load_file('config/eureka.yml')[Rails.env]
+    eureka_config['mauth_config'] = mauth_config
+    eureka_config['logger'] = Rails.logger
+    agifog_api = YAML.load_file(Rails.root.join('config/api_document.yml'))
+    eureka_client = Eureka::Client.new(eureka_config)
+
+    eureka_client.deploy_apis!([agifog_api])
   end
 end
