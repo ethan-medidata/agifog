@@ -85,7 +85,7 @@ resources:
         httpMethod: GET
       create:
         id: agifog.iam_users_policies.create
-        path: path: iam/users/{user_id}/policies
+        path: iam/users/{user_id}/policies
         httpMethod: POST
       delete:
         id: agifog.iam_users_policies.delete
@@ -103,7 +103,7 @@ resources:
         httpMethod: GET
       create:
         id: agifog.iam_users_access_keys.create
-        path: path: iam/users/{user_id}/access_keys
+        path: iam/users/{user_id}/access_keys
         httpMethod: POST
       delete:
         id: agifog.iam_users_access_keys.delete
