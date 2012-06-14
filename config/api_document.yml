@@ -55,3 +55,57 @@ resources:
         parameters: 
           id: 
             description: rds authorize a security group id
+  iam_users:
+    methods:
+      list:
+        id: agifog.iam_users.list
+        path: iam/users
+        httpMethod: GET
+      show:
+        id: agifog.iam_users.show
+        path: iam/users/{id}
+        httpMethod: GET
+      create:
+        id: agifog.iam_users.create
+        path: iam/users
+        httpMethod: POST
+      delete:
+        id: agifog.iam_users.delete
+        path: iam/users/{id}
+        httpMethod: DELETE
+  iam_users_policies:
+    methods:
+      list:
+        id: agifog.iam_users_policies.list
+        path: iam/users/{user_id}/policies
+        httpMethod: GET
+      show:
+        id: agifog.iam_users_policies.show
+        path: iam/users/{user_id}/policies/{id}
+        httpMethod: GET
+      create:
+        id: agifog.iam_users_policies.create
+        path: path: iam/users/{user_id}/policies
+        httpMethod: POST
+      delete:
+        id: agifog.iam_users_policies.delete
+        path: iam/users/{user_id}/policies/{id}
+        httpMethod: DELETE
+  iam_users_access_keys:
+    methods:
+      list:
+        id: agifog.iam_users_access_keys.list
+        path: iam/users/{user_id}/access_keys
+        httpMethod: GET
+      show:
+        id: agifog.iam_users_access_keys.show
+        path: iam/users/{user_id}/access_keys/{id}
+        httpMethod: GET
+      create:
+        id: agifog.iam_users_access_keys.create
+        path: path: iam/users/{user_id}/access_keys
+        httpMethod: POST
+      delete:
+        id: agifog.iam_users_access_keys.delete
+        path: iam/users/{user_id}/access_keys/{id}
+        httpMethod: DELETE
